@@ -1,22 +1,35 @@
+import React from 'react';
 import ReactDOM from "react-dom/client";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ApolloProvider } from "@apollo/client";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import "./index.css";
 
 import App from "./App";
 import Error from "./pages/Error";
 import Home from "./pages/Home";
-import SignIn from "./pages/SignIn";
+import LogIn from "./pages/LogIn";
 import SignUp from "./pages/signup";
 import Profile from "./pages/Profile";
-import JobBoard from "./pages/jobBoard";
+import NewWorkout from "./pages/newWorkout";
 import JobDetails from "./pages/JobDetails";
 
-const client = new ApolloClient({
-  uri: "http://localhost:3001/graphql", // Replace with your actual GraphQL API endpoint
-  cache: new InMemoryCache(),
-});
-// Define the accessible routes, and which components respond to which URL
+function PrivateRoute({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('id_token');
+      setIsAuthenticated(!!token);
+    };
+    
+    checkAuth();
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+
+  return isAuthenticated ? children : <Navigate to="/logIn" />;
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,31 +41,29 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/profile/:userId",
-        element: <Profile />,
+        path: "/profile",     
+        element: <PrivateRoute><Profile /></PrivateRoute>,
       },
       {
-        path: "/SignIn",
-        element: <SignIn />,
+        path: "/LogIn",
+        element: <LogIn />,
       },
       {
         path: "/SignUp",
         element: <SignUp />,
       },
       {
-        path: "/jobBoard",
-        element: <JobBoard />,
+        path: "/newWorkout",
+        element: <PrivateRoute><NewWorkout /></PrivateRoute>,
       },
       {
         path: "/JobDetails/:jobId",
-        element: <JobDetails />,
+        element: <PrivateRoute><JobDetails /></PrivateRoute>,
       },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <ApolloProvider client={client}>
-    <RouterProvider router={router} />
-  </ApolloProvider>
+  <RouterProvider router={router} />
 );

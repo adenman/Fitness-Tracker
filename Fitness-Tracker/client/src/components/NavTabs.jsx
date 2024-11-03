@@ -36,7 +36,7 @@ function NavTabs() {
         </a>
         </>
           ) : (
-          <a href="/SignIn" className="text-sm font-semibold leading-6 text-black">
+          <a href="/LogIn" className="text-sm font-semibold leading-6 text-black">
             Log in <span aria-hidden="true">&rarr;</span>
           </a>
           )}

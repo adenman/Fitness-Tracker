@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const jobSchema = new Schema({
+const workoutSchema = new Schema({
   
   name: {
     type: String,
@@ -8,17 +8,13 @@ const jobSchema = new Schema({
     unique: true,
     trim: true,
   },
-  description:  { 
+  instuctions:  { 
     type: String,
     required: true,
   },
-  pay: {
-    type: Number,
-    required: true,
-  }
   
 });
 
-const Job = model('Job', jobSchema);
+const Workout = model('workout', workoutSchema);
 
-module.exports = Job;
+module.exports = Workout;

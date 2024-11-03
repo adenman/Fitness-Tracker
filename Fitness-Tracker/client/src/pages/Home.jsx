@@ -11,13 +11,29 @@ export default function Home() {
     <div>
       <h3 className='text-warning rounded'>Workouts</h3>
       <ul className="list-group rounded">
-        
-          <li className="list-group-item">An item</li>
-          <li className="list-group-item">A second item</li>
-          <li className="list-group-item">A third item</li>
-          <li className="list-group-item">A fourth item</li>
-          <li className="list-group-item">And a fifth one</li>
-          <li className="list-group-item text-center">+</li>
+        <a href="">
+          <li className="list-group-item text-center">
+            <button>workout</button>
+          </li>
+        </a>
+
+        <a href="">
+          <li className="list-group-item text-center">
+            <button>workout</button>
+          </li>
+        </a>
+
+        <a href="">
+          <li className="list-group-item text-center">
+            <button>workout</button>
+          </li>
+        </a>
+
+        <a href="/newWorkout">
+          <li className="list-group-item text-center">
+            <button>+</button>
+          </li>
+        </a>
       </ul>
       <Cal />
       

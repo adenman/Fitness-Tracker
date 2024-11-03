@@ -2,7 +2,6 @@ import './App.css';
 import './index.css';
 import { Outlet } from 'react-router-dom';
 import Nav from './components/NavTabs';
-import Footer from './components/Footer';
 import {
   ApolloClient,
   InMemoryCache,
@@ -26,6 +25,7 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
+
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),

@@ -1,10 +1,21 @@
 :root {
- 
+  
 }
 html{
   background-color: black;
 }
 .mar{
   margin-top: 120px;
+}
+
+.b{
+  padding: 10px;
+}
+
+.b li{
+  background-color: #ffc107;
+  margin: 10px;
+  border-radius: 10px;
+  
 }
 

@@ -41,9 +41,9 @@ const authMiddleware = async ({ req }) => {
     return req;
 };
 
-const signToken = function ({ email, name, _id }) {
-    const payload = { email, name, _id };
+const signToken = function ({ userName, _id }) {
+    const payload = { userName, _id };
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
-};
+  };
 
 module.exports = { authMiddleware, signToken, AuthenticationError };
