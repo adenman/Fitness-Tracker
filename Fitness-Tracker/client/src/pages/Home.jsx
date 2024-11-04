@@ -1,43 +1,50 @@
-import  Cal  from './../components/Cal';
+import { useNavigate } from 'react-router-dom';
+import Cal from './../components/Cal';
 import 'bootstrap/dist/css/bootstrap.min.css'
-
+import Auth from "./../utils/auth";
 
 export default function Home() {
+  const navigate = useNavigate();
   
-
-  
-  return (
-    <>
-    <div>
-      <h3 className='text-warning rounded'>Workouts</h3>
-      <ul className="list-group rounded">
-        <a href="">
+  if (Auth.loggedIn()) {
+    return (
+      <>
+      <div>
+        <h3 className='text-warning rounded'>Workouts</h3>
+        <ul className="list-group rounded">
           <li className="list-group-item text-center">
-            <button>workout</button>
+            <button onClick={() => navigate('/workout')}>workout</button>
           </li>
-        </a>
 
-        <a href="">
           <li className="list-group-item text-center">
-            <button>workout</button>
+            <button onClick={() => navigate('/workout')}>workout</button>
           </li>
-        </a>
 
-        <a href="">
           <li className="list-group-item text-center">
-            <button>workout</button>
+            <button onClick={() => navigate('/workout')}>workout</button>
           </li>
-        </a>
 
-        <a href="/newWorkout">
           <li className="list-group-item text-center">
-            <button>+</button>
+            <button onClick={() => navigate('/newWorkout')}>+</button>
           </li>
-        </a>
-      </ul>
-      <Cal />
-      
-      </div>
-    </>
-  );
+        </ul>
+        <Cal />
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+      <div>
+        <h3 className='text-warning rounded'>Workouts</h3>
+        <ul className="list-group rounded">
+          <li className="list-group-item text-center">
+            <button onClick={() => navigate('/logIn')}>LogIn to view workouts</button>
+          </li>
+        </ul>
+        <Cal />
+        </div>
+      </>
+    );
+  }
 }

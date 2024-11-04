@@ -1,23 +1,15 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { gql } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
 
-const SIGN_UP = gql`
-  mutation addUser($userName: String!, $password: String!) {
-    addUser(userName: $userName, password: $password) {
-      _id
-      userName
-      password
-    }
-  }
-`;
+import { useNavigate } from 'react-router-dom';
+import { ADD_USER } from '../utils/mutations';
+
 
 export default function SignUp() {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [addUser] = useMutation(SIGN_UP);
+  const [addUser] = useMutation(ADD_USER);
   const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {

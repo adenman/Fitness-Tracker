@@ -61,17 +61,17 @@ const resolvers = {
 
     login: async (parent, { userName, password }) => {
       const user = await User.findOne({ userName });
+    
       if (!user) {
-        throw new AuthenticationError('No user found with this email');
+        throw AuthenticationError;
       }
-
+    
       const correctPw = await user.isCorrectPassword(password);
-
+    
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect credentials');
+        throw AuthenticationError;
       }
-
-      // Sign token after successful login
+    
       const token = signToken(user);
       return { token, user };
     },

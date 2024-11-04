@@ -1,8 +1,8 @@
-import React from 'react';
+
 import ReactDOM from "react-dom/client";
-import { ApolloProvider } from "@apollo/client";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import "./index.css";
+
 
 import App from "./App";
 import Error from "./pages/Error";
@@ -13,22 +13,9 @@ import Profile from "./pages/Profile";
 import NewWorkout from "./pages/newWorkout";
 import JobDetails from "./pages/JobDetails";
 
-function PrivateRoute({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
-  React.useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem('id_token');
-      setIsAuthenticated(!!token);
-    };
-    
-    checkAuth();
-    window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
-  }, []);
 
-  return isAuthenticated ? children : <Navigate to="/logIn" />;
-}
+
 
 const router = createBrowserRouter([
   {
@@ -42,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",     
-        element: <PrivateRoute><Profile /></PrivateRoute>,
+        element: <Profile />,
       },
       {
         path: "/LogIn",
@@ -54,11 +41,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/newWorkout",
-        element: <PrivateRoute><NewWorkout /></PrivateRoute>,
+        element: <NewWorkout />,
       },
       {
         path: "/JobDetails/:jobId",
-        element: <PrivateRoute><JobDetails /></PrivateRoute>,
+        element: <JobDetails />,
       },
     ],
   },

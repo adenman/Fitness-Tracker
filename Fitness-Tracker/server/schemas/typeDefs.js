@@ -45,7 +45,7 @@ type Auth {
 
 
   type Mutation {
-    addUser(userName: String!, password: String!): User
+    addUser(userName: String!, password: String!): Auth
     addSkill(UserId: ID!, skill: String!): User
     removeSkill(UserId: ID!, skill: String!): User
     addJobToUser(userId: ID!, jobId: ID!): User
