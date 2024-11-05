@@ -2,7 +2,7 @@
   
 }
 html{
-  background-color: black;
+  background-color: #292828 ;
 }
 .mar{
   margin-top: 120px;
@@ -13,9 +13,27 @@ html{
 }
 
 .b li{
-  background-color: #ffc107;
+  background-color: #03a7aa;
   margin: 10px;
   border-radius: 10px;
   
+}
+
+
+.r{
+  background-color: #324747;
+}
+
+
+.g{
+  background-color: #292828
+}
+
+.t{
+  color: white;
+}
+
+.a{
+
 }
 

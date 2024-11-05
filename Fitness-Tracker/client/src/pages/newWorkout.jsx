@@ -23,7 +23,7 @@ const NewWorkout = () => {
 
   return (
     <div>
-      <h1 className='text-warning text-center rounded'>Create New Workout!</h1>
+      <h1 className='t text-center rounded'>Create New Workout!</h1>
       <ul className="list-group border border-warning b">
         
         {isEditing ? (
@@ -36,10 +36,10 @@ const NewWorkout = () => {
             autoFocus
           />
         ) : (
-          <h1 className='text-warning text-center rounded'>{workoutName}</h1>
+          <h1 className='text-white text-center rounded'>{workoutName}</h1>
         )}
         
-        <button className='text-warning' onClick={handleEditClick}>Edit Name</button>
+        <button className='t' onClick={handleEditClick}>Edit Name</button>
         
         <a href="">
           <li className="list-group-item text-center">

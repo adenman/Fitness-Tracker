@@ -9,8 +9,8 @@ function NavTabs() {
   
 
   return (
-    <div className="bg-black mb-32">
-    <header className="absolute inset-x-0 top-0 z-50 bg-warning ">
+    <div className="g mb-32">
+    <header className="absolute inset-x-0 top-0 z-50 r ">
       <nav aria-label="Global" className="flex items-center justify-between lg:px-8">
         <div className="flex lg:flex-1">
           <a href="/" className="-m-6 ">
