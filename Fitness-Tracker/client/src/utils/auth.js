@@ -28,11 +28,11 @@ class AuthService {
   }
 
   login(idToken) {
-    console.log('Auth Service: Setting token', idToken);
+    // Saves user token to localStorage
     localStorage.setItem('id_token', idToken);
-    console.log('Auth Service: Token after setting', localStorage.getItem('id_token'));
-    
-}
+
+    window.location.assign('/');
+  }
 
   logout() {
     // Clear user token and profile data from localStorage

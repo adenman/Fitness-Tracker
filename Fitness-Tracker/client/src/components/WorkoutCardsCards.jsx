@@ -1,50 +1,111 @@
-
 import { Card } from "flowbite-react";
+import { useState, useEffect } from "react";
 
+function WorkoutCards() {
+  const [exercises, setExercises] = useState([]);
+  const [muscle, setMuscle] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  
+  useEffect(() => {
+    fetchExercises();
+  }, [muscle]);
 
+  const fetchExercises = async () => {
+    try {
+      const response = await fetch(
+        `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}${difficulty ? `&difficulty=${difficulty}` : ''}`,
+        {
+          headers: {
+            'X-Api-Key': 'O0ZirOlVcXTxpgXYb45k7Q==Z5yJOywTfrqP9CVv'
+          }
+        }
+      );
+      const data = await response.json();
+      setExercises(data);
+    } catch (error) {
+      console.error('Error fetching exercises:', error);
+    }
+  };
 
+  const muscleGroups = [
+    'biceps', 'triceps', 'chest', 'lower_back', 
+    'middle_back', 'traps', 'abdominals', 'abductors', 'adductors', 'calves', 'forearms', 'glutes',
+    'hamstrings', 'lats', 'quadriceps'
+  ];
 
+  const difficulties = ['beginner', 'intermediate', 'expert'];
 
-function workoutCards() {
+  const filteredExercises = exercises.filter(exercise =>
+    exercise.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <>
-    {/* <div className="flex flex-row items-center gap-4  mx-auto m-5 border border-warning b text-warning">
-      <img src="/defaultpfp.PNG" alt="" className="h-28 w-auto" />
-      <h2>Workout title</h2>
-      <p>description</p>
-      <button className="text-6xl ">+</button>
-      
-    </div> */}
-    <div className="flex flex-col items-center w-1/2 mx-auto mt-8">
-      
-        <Card  className="w-full p-4 mb-6 border-4 border-warning bg-black text-warning">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 mr-6">
-              <h5 className="mt-3 text-2xl font-medium text-center">
-              Workout Title
+    <div className="container mx-auto px-4">
+      <div className="flex flex-col items-center gap-4 mb-8 mt-4">
+        <input
+          type="text"
+          placeholder="Search exercises..."
+          className="p-2 bg-black text-warning border-warning border-2 rounded w-64"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <div className="flex gap-4">
+          <select 
+            className="p-2 bg-black text-warning border-warning border-2 rounded"
+            value={muscle} 
+            onChange={(e) => setMuscle(e.target.value)}
+          >
+            <option value="">All Muscles</option>
+            {muscleGroups.map(group => (
+              <option key={group} value={group}>
+                {group.charAt(0).toUpperCase() + group.slice(1)}
+              </option>
+            ))}
+          </select>
+
+          <select 
+            className="p-2 bg-black text-warning border-warning border-2 rounded"
+            value={difficulty} 
+            onChange={(e) => setDifficulty(e.target.value)}
+          >
+            <option value="">All Difficulties</option>
+            {difficulties.map(level => (
+              <option key={level} value={level}>
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        
+      </div>
+
+      <div className="grid gap-6 md:w-3/4 lg:w-1/2 mx-auto">
+        {filteredExercises.map((exercise, index) => (
+          <Card key={index} className="border-4 border-warning bg-black text-warning">
+            <div className="flex flex-col">
+              <h5 className="text-2xl font-medium text-center mb-4">
+                {exercise.name}
               </h5>
-              <img
+              <p className="text-center">Difficulty: {exercise.difficulty  }</p>
+              <p className="text-center">Type: {exercise.type}</p>
+              <p className="text-center">Equipment: {exercise.equipment}</p>
+              <div className="flex flex-col md:flex-row items-center gap-6 mx-3">
                 
-                height="128"
-                src={ "/defaultpfp.PNG"}
-                width="128"
-                className="rounded-full shadow-lg object-cover"
-              />
-              
-              
+                <div className="flex-grow">
+                  <p className="text-base">
+                    {exercise.instructions}
+                  </p>
+                </div>
+              </div>
+              <button className="text-2xl bg-warning text-black">+</button>
             </div>
-            <div className="flex-grow">
-              
-              <span className="text-base">
-                descripton  descripton  descripton  descripton  descripton  descripton  descripton  descripton  descripton 
-              </span>
-              
-            </div>
-          </div>
-        </Card>
+          </Card>
+        ))}
+      </div>
     </div>
-    </>
   );
 }
 
-export default workoutCards;
+export default WorkoutCards;

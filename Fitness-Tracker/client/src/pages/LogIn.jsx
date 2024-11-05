@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import Auth from '../utils/auth';
+import { Link } from 'react-router-dom';
 import { LOGIN } from '../utils/mutations';
-import { useNavigate } from 'react-router-dom';
-
-
+import Auth from '../utils/auth';
 
 function Login(props) {
   const [formState, setFormState] = useState({ userName: '', password: '' });
   const [login, { error }] = useMutation(LOGIN);
-  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,7 +16,6 @@ function Login(props) {
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
-      navigate('/');
     } catch (e) {
       console.log(e);
     }
@@ -32,6 +28,7 @@ function Login(props) {
       [name]: value,
     });
   };
+
 
 
   return (

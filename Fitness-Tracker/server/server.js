@@ -16,23 +16,26 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: authMiddleware,
 });
 
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  credentials: true
 }));
 
 const startApolloServer = async () => {
   await server.start();
-  console.log("Apollo Server started");
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
-  // Important for MERN Setup: When our application runs from production, it functions slightly differently than in development
-  // In development, we run two servers concurrently that work together
-  // In production, our Node server runs and delivers our client-side bundle from the dist/ folder 
+  // Serve up static assets
+  app.use('/images', express.static(path.join(__dirname, '../client/images')));
+
+  app.use('/graphql', expressMiddleware(server, {
+    context: authMiddleware
+  }));
+
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
@@ -41,21 +44,12 @@ const startApolloServer = async () => {
     });
   }
 
-  // Important for MERN Setup: Any client-side requests that begin with '/graphql' will be handled by our Apollo Server
-  app.use('/graphql', expressMiddleware(server, {
-    context: authMiddleware
-  }));
-
-  // Log when MongoDB is connected successfully
-  mongoose.connection.once('open', () => {
-    console.log('Successfully connected to MongoDB!');
-
-    app.listen(PORT, HOST, () => {
+  db.once('open', () => {
+    app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
   });
 };
-
 // Call to start Apollo Server
 startApolloServer(); 

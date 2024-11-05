@@ -39,7 +39,7 @@ export default function Home() {
         <h3 className='text-warning rounded'>Workouts</h3>
         <ul className="list-group rounded">
           <li className="list-group-item text-center">
-            <button onClick={() => navigate('/logIn')}>LogIn to view workouts</button>
+            <button onClick={() => navigate('/newWorkout')}>LogIn to view workouts</button>
           </li>
         </ul>
         <Cal />

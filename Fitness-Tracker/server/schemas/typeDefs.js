@@ -32,7 +32,7 @@ type Auth {
 }
 
   type Query {
-    User: [User]!
+    User: User!
     oneUser(user: ID!): User
 
     Job: [Job]!
@@ -52,13 +52,6 @@ type Auth {
     removeJobFromUser(userId: ID!, jobId: ID!): User
     addPost(title: String!, text: String! ): Post
     login(userName: String!, password: String!): Auth
-    logout: LogoutResponse # Add this line
-
-  }
-
-type LogoutResponse {
-  success: Boolean
-  message: String
 }
 `;
 
