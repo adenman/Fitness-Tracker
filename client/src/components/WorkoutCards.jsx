@@ -1,12 +1,14 @@
 import { Card } from "flowbite-react";
 import { useState, useEffect } from "react";
+import { useWorkout } from './context';
 
 function WorkoutCards() {
   const [exercises, setExercises] = useState([]);
   const [muscle, setMuscle] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [difficulty, setDifficulty] = useState('');
-  
+  const { setSelectedExercise } = useWorkout();
+
   useEffect(() => {
     fetchExercises();
   }, [muscle]);
@@ -28,6 +30,11 @@ function WorkoutCards() {
     }
   };
 
+  const handleAddWorkout = (exercise) => {
+    setSelectedExercise(exercise);
+  };
+
+
   const muscleGroups = [
     'biceps', 'triceps', 'chest', 'lower_back', 
     'middle_back', 'traps', 'abdominals', 'abductors', 'adductors', 'calves', 'forearms', 'glutes',
@@ -46,13 +53,13 @@ function WorkoutCards() {
         <input
           type="text"
           placeholder="Search exercises..."
-          className="p-2 bg-black text-warning border-warning border-2 rounded w-64"
+          className="p-2 bg-black t blue-b border-2 rounded w-64"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div className="flex gap-4">
           <select 
-            className="p-2 bg-black text-warning border-warning border-2 rounded"
+            className="p-2 bg-black t blue-b border-2 rounded"
             value={muscle} 
             onChange={(e) => setMuscle(e.target.value)}
           >
@@ -65,7 +72,7 @@ function WorkoutCards() {
           </select>
 
           <select 
-            className="p-2 bg-black text-warning border-warning border-2 rounded"
+            className="p-2 bg-black t blue-b border-2 rounded"
             value={difficulty} 
             onChange={(e) => setDifficulty(e.target.value)}
           >
@@ -81,9 +88,9 @@ function WorkoutCards() {
         
       </div>
 
-      <div className="grid gap-6 md:w-3/4 lg:w-1/2 mx-auto">
+      <div className="grid gap-6 md:w-3/4 lg:w-1/2 mx-auto t">
         {filteredExercises.map((exercise, index) => (
-          <Card key={index} className="border-4 border-warning bg-black text-warning">
+          <Card key={index} className="border-4 blue-b bg-black t">
             <div className="flex flex-col">
               <h5 className="text-2xl font-medium text-center mb-4">
                 {exercise.name}
@@ -99,7 +106,8 @@ function WorkoutCards() {
                   </p>
                 </div>
               </div>
-              <button className="text-2xl bg-warning text-black">+</button>
+              <button className="text-2xl back text-black" 
+              onClick={() => handleAddWorkout(exercise)}>+</button>
             </div>
           </Card>
         ))}

@@ -10,7 +10,7 @@ export default function Home() {
     return (
       <>
       <div>
-        <h3 className='text-warning rounded'>Workouts</h3>
+        <h3 className='text-white rounded'>Workouts</h3>
         <ul className="list-group rounded">
           <li className="list-group-item text-center">
             <button onClick={() => navigate('/workout')}>workout</button>
@@ -36,7 +36,7 @@ export default function Home() {
     return (
       <>
       <div>
-        <h3 className='text-warning rounded'>Workouts</h3>
+        <h3 className='t rounded'>Workouts</h3>
         <ul className="list-group rounded">
           <li className="list-group-item text-center">
             <button onClick={() => navigate('/newWorkout')}>LogIn to view workouts</button>

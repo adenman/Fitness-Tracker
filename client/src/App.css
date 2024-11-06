@@ -1,5 +1,5 @@
 :root {
-  
+  background-color: #292828 ;
 }
 html{
   background-color: #292828 ;
@@ -20,8 +20,19 @@ html{
 }
 
 
+.blue-b{
+  border-color: #03a7aa;
+}
+
+.back{
+  background-color: #03a7aa;
+}
+
+
+
+
 .r{
-  background-color: #324747;
+  background-color: #03a7aa;
 }
 
 

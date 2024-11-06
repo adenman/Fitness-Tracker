@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import WorkoutCards from "../components/workoutCardsCards";
+import WorkoutCards from "../components/WorkoutCards";
+import { useWorkout } from './../components/context';
 
-'use client'
 
 const NewWorkout = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [workoutName, setWorkoutName] = useState('New Workout');
+  const { selectedExercise } = useWorkout();
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -24,7 +25,7 @@ const NewWorkout = () => {
   return (
     <div>
       <h1 className='t text-center rounded'>Create New Workout!</h1>
-      <ul className="list-group border border-warning b">
+      <ul className="list-group border blue-b b">
         
         {isEditing ? (
           <input
@@ -41,32 +42,14 @@ const NewWorkout = () => {
         
         <button className='t' onClick={handleEditClick}>Edit Name</button>
         
-        <a href="">
-          <li className="list-group-item text-center">
-            <button>workout</button>
-          </li>
-        </a>
-        
-        <a href="">
-          <li className="list-group-item text-center">
-            <button>workout</button>
-          </li>
-        </a>
-
-        <a href="">
-          <li className="list-group-item text-center">
-            <button>workout</button>
-          </li>
-        </a>
-
-        <a href="">
-          <li className="list-group-item text-center">
-            <button>workout</button>
-          </li>
-        </a>
+        <li>
+  <div>
+    <h2>{selectedExercise ? selectedExercise.name : 'Select an exercise'}</h2>
+  </div>
+</li>
       </ul>
 
-      <h1 className="text-center text-warning mt-10">Workouts</h1>
+      <h1 className="text-center t mt-10">Workouts</h1>
       
       <WorkoutCards />
     </div>

@@ -18,7 +18,7 @@ function renderEventContent(eventInfo) {
 function Cal() {
   return (
     <div className="App">
-      <h1 className="App-header text-center text-warning">Your progress</h1>
+      <h1 className="App-header text-center t">Your progress</h1>
       <FullCalendar
         headerToolbar={{
           start: 'title', // Will show us the calendar's month & year on the start

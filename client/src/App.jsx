@@ -9,7 +9,7 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-
+import { WorkoutProvider } from './components/context';
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -34,12 +34,14 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
+      <WorkoutProvider>
       <>
         <Nav />
         <main className="flex-column justify-center align-center min-100-vh g mx-3">
           <Outlet />
         </main>
       </>
+      </WorkoutProvider>
     </ApolloProvider>
   );
 }
