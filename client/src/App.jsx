@@ -12,9 +12,7 @@ import { setContext } from '@apollo/client/link/context';
 import { WorkoutProvider } from './components/context';
 
 // Construct our main GraphQL API endpoint
-const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql',
-});
+
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
@@ -27,8 +25,8 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  uri: 'http://localhost:3001/graphql',
+  cache: new InMemoryCache()
 });
 
 function App() {

@@ -33,13 +33,7 @@ query GetAllUsers {
   users {
     _id
     userName
-    skills
-    jobs {
-      _id
-      name
-      description
-      pay
-    }
+    password
   }
 }
 `;

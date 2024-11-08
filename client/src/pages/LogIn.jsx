@@ -1,37 +1,42 @@
-import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { Link } from 'react-router-dom';
 import { LOGIN } from '../utils/mutations';
-import Auth from '../utils/auth';
+import { useState } from 'react';
+
+
+
+
 
 function Login(props) {
-  const [formState, setFormState] = useState({ userName: '', password: '' });
-  const [login, { error }] = useMutation(LOGIN);
+  const [userName, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [login] = useMutation(LOGIN);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  async function submitUser(event) {
+    event.preventDefault()
     try {
-      const mutationResponse = await login({
-        variables: { userName: formState.userName, password: formState.password },
+      const { data } = await login({
+        variables: { 
+          userName: userName,
+          password: password 
+        }
       });
-      const token = mutationResponse.data.login.token;
-      Auth.login(token);
-    } catch (e) {
-      console.log(e);
+      
+      if (data && data.login && data.login.token) {
+        localStorage.setItem('id_token', data.login.token);
+        window.location.href = '/'; 
+      } else {
+        alert('Invalid credentials');
+      }
+    } catch (error) {
+      console.log('Error details:', error);
+      alert('Login error: ' + error.message);
     }
-  };
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
+  }
 
 
 
   return (
+    
     <section className="vh-100 gradient-custom">
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
@@ -42,31 +47,33 @@ function Login(props) {
                   <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
                   <p className="text-white-50 mb-5">Please enter your login and password!</p>
 
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={submitUser}>
                     <div data-mdb-input-init className="form-outline form-white mb-4">
                     <input
                       placeholder="username"
                       name="userName" 
                       type="text"     
                       id="username"
-                      onChange={handleChange}
+                      value={userName}
+                      onChange={(e) => setUsername(e.target.value)}
                     />
                       <label className="form-label" htmlFor="username">Username</label>
                     </div>
                     <div data-mdb-input-init className="form-outline form-white mb-4">
                     <input
-                      placeholder="******"
+                      placeholder="********"
                       name="password"
                       type="password"
                       id="pwd"
-                      onChange={handleChange}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                       <label className="form-label" htmlFor="password">Password</label>
                     </div>
                     <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
                   </form>
                 </div>
-                {error && <div className="error">{error.message}</div>}
+                
                 <div>
                   <p className="mb-0">Don't have an account? <a href="/Signup" className="fw-bold text-warning">Sign Up</a></p>
                 </div>
@@ -76,6 +83,7 @@ function Login(props) {
         </div>
       </div>
     </section>
+    
   );
 }
 

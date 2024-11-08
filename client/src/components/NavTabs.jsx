@@ -26,8 +26,8 @@ function NavTabs() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {Auth.loggedIn() ? (
             <> 
-            <button onClick={Auth.logout()}> 
-            <a href="/Profile" className="text-sm mr-3 font-semibold leading-6 text-white">
+            <button onClick={Auth.logout}> 
+            <a href="/" className="text-sm mr-3 font-semibold leading-6 text-white">
             Logout 
           </a>
           </button>
