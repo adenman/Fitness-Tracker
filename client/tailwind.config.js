@@ -10,6 +10,11 @@ export default {
   ],
   theme: {
     extend: {},
+    screens: {
+      'sm': {'max': '290px'},
+      'md': '769px',
+      'lg': '1024px',
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
