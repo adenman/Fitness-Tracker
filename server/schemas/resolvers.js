@@ -1,7 +1,8 @@
-const { User, Job, Post } = require('../models');
+const { User, Regiment } = require('../models');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 const { generateToken } = require('../utils/tokenGen');
+const Auth = require('../utils/auth');
 
 const resolvers = {
   Query: {
@@ -13,15 +14,15 @@ const resolvers = {
         jobs: user.jobs || []
       }));
     },
-    oneUser: async (parent, { user }) => {
-      return User.findOne({ _id: user });
+    Regiment: async (parent, { regiment }) => {
+      return Regiment.findOne({ _id: regiment });
     },
 
 
 
     // Fetch all posts
-    posts: async () => {
-      return await Post.find({});
+    Regiments: async () => {
+      return await Regiment.find({});
     }
   },
 
@@ -63,6 +64,34 @@ const resolvers = {
 
       return { token, user };
     },
+
+    addRegiment: async (parent, { name, workouts  }) => {
+      
+
+      const regiment = await Regiment.create({
+        name, workouts
+      });
+
+      return regiment;
+    },
+
+    addRegimentToUser: async (parent, { userId, regimentId }) => {
+      try {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: userId },
+          { $addToSet: { regiments: regimentId } }, 
+          { new: true }
+        ).populate('regiments');
+    
+        if (!updatedUser) {
+          throw new Error('User not found');
+        }
+    
+        return updatedUser;
+      } catch (error) {
+        throw new Error(`Failed to add regiment: ${error.message}`);
+      }
+    }
 
 
   },

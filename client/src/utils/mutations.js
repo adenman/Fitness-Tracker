@@ -28,22 +28,36 @@ export const LOGIN = gql`
   }
 `;
 
-export const ADD_JOB = gql`
-mutation AddJobToUser($userId: ID!, $jobId: ID!) {
-  addJobToUser(userId: $userId, jobId: $jobId) {
-    user {
+export const ADD_REGIMENT_TO_USER = gql`
+  mutation AddRegimentToUser($userId: ID!, $regimentId: ID!) {
+    addRegimentToUser(userId: $userId, regimentId: $regimentId) {
       _id
       userName
-    }
-    job {
-      _id
-      name
-      description
-      pay
+      regiment {
+        _id
+        name
+      }
     }
   }
-}
 `;
+export const ADD_REGIMENT = gql`
+  mutation AddRegiment($name: String!, $workouts: [WorkoutInput]) {
+    addRegiment(name: $name, workouts: $workouts) {
+      _id
+      name
+      workouts {
+        instructions
+        type
+        muscle
+        difficulty
+        equipment
+      }
+    }
+  }
+`;
+
+
+
 
 export const ADD_POST = gql`
 mutation AddPost($title: String!, $text: String!) {
@@ -60,15 +74,7 @@ mutation AddPost($title: String!, $text: String!) {
 }
 `;
 
-export const ADD_SKILL = gql`
-mutation AddSkill($userId: ID!, $skill: String!) {
-  addSkill(UserId: $userId, skill: $skill) {
-    _id
-    userName
-    skills
-  }
-}
-`;
+
 
 export const REMOVE_JOB = gql`
 mutation RemoveJobFromUser($userId: ID!, $jobId: ID!) {

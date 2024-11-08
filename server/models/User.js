@@ -20,25 +20,15 @@ const userSchema = new Schema(
       required: true,
       minlength: 8,
     },
-    skills: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
-    jobs: [
+    
+    regiments: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Job',
+        ref: 'regiment',
         default: [],
       },
     ],
-    posts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Post',
-      },
-    ],
+   
   },
   {
     toJSON: {
@@ -61,15 +51,7 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-// Add virtual property for `jobCount` to count jobs
-userSchema.virtual('jobCount').get(function () {
-  return this.jobs.length;
-});
 
-// Add virtual property for `postCount` to count posts
-userSchema.virtual('postCount').get(function () {
-  return this.posts.length;
-});
 
 const User = model('User', userSchema);
 

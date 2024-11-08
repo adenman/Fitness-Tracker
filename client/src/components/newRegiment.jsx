@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/client';
 import { useWorkout } from './../components/context';
-
+import {ADD_REGIMENT_TO_USER, ADD_REGIMENT} from '../utils/mutations'
+import Auth from '../utils/auth'
 
 const NewRegiment = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -10,6 +12,8 @@ const NewRegiment = () => {
       const savedWorkouts = localStorage.getItem('currentSetup');
       return savedWorkouts ? JSON.parse(savedWorkouts) : [];
     });
+    const [addRegimentToUser] = useMutation(ADD_REGIMENT_TO_USER);
+    const [addRegiment] = useMutation(ADD_REGIMENT);
 
     
 
@@ -31,7 +35,15 @@ const NewRegiment = () => {
     };
 
 
-    const handleSaveWorkout = () => {
+    const handleSaveWorkout = async () => {
+
+      if (!Auth.loggedIn()) {
+        return;
+      }
+      
+      const profile = Auth.getProfile();
+      const userId = profile.data._id;
+      
       if (!selectedWorkouts || selectedWorkouts.length === 0) {
         return (
           <h2 className="text-center text-xl font-bold text-white mt-4">
@@ -39,20 +51,41 @@ const NewRegiment = () => {
           </h2>
         );
       }
+      
+      
 
-      const workoutRegiment = {
+      const regimentData = {
         name: workoutName,
-        exercises: selectedWorkouts,
-        date: new Date().toISOString()
+        workouts: selectedWorkouts
       };
-      
-      const savedRegiments = JSON.parse(localStorage.getItem('workoutRegiments') || '[]');
-      savedRegiments.push(workoutRegiment);
-      localStorage.setItem('workoutRegiments', JSON.stringify(savedRegiments));
-      
-      
-      setSelectedWorkouts([]);
-      setWorkoutName('New Workout');
+    
+      try {
+        const regimentResponse = await addRegiment({
+          variables: {
+            name: workoutName,
+            workouts: selectedWorkouts.map(workout => ({
+              name: workout.name,          
+              instructions: workout.instructions,
+              type: workout.type,
+              muscle: workout.muscle,
+              difficulty: workout.difficulty,
+              equipment: workout.equipment
+            }))
+          }
+        });
+    
+        if (regimentResponse.data) {
+          await addRegimentToUser({
+            variables: {
+              userId: userId,
+              regimentId: regimentResponse.data.addRegiment._id
+            }
+          });
+          setSelectedWorkouts([]);
+        }
+      } catch (err) {
+        console.error("Error details:", err.message);
+      }
     };
 
     
@@ -114,13 +147,21 @@ const NewRegiment = () => {
             <h2 className="text-xl font-bold">Select a workout to add to your regiment</h2>
           )}  
             <div className="flex justify-center w-full mt-4">
-  <button 
-    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-    onClick={() => handleSaveWorkout()}
+            
+
+  {selectedWorkouts.length === 0 ? (
+      <h2 className="text-center text-xl font-bold text-white my-4">
+        
+      </h2>
+    ) : (<button 
+    className='bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded' 
+    onClick={() => {
+      handleSaveWorkout();
+      
+    }}
   >
     Save Workout
-  </button>
-</div>      
+  </button>)}</div>      
         </ul>
         
       </div>

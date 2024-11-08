@@ -6,25 +6,31 @@ const typeDefs = gql`
     userName: String
     pfp: String
     password: String
-
-    skills: [String]
-    jobs: [Job]
-    posts: [Post]
+    regiment: [Regiment]
   }
 
-  type Job {
+  type Workout {
+    instructions: String
+    type: String
+    muscle: String
+    difficulty: String
+    equipment: String
+  }
+
+  type Regiment {
   _id: ID
   name: String
-  description: String
-  pay: Int
+  workouts: [Workout]
   }
 
-  type Post {
-  _id: ID
-  title: String
-  text:  String
-  user:  User
-  }
+input WorkoutInput {
+    name: String
+    instructions: String
+    type: String
+    muscle: String
+    difficulty: String
+    equipment: String
+}
 
 type Auth {
   token: ID
@@ -35,22 +41,19 @@ type Auth {
     User: User!
     oneUser(user: ID!): User
 
-    Job: [Job]!
-    OneJob(jobId: ID!): Job
+    Regiments: [Regiment]!
+    Regiment(regiment: ID!): Regiment
+    
 
-    Post: [Post]!
-    post(post: ID!): Post
-    posts: [Post]!
+    
   }
 
 
   type Mutation {
     addUser(userName: String!, password: String!): Auth
-    addSkill(UserId: ID!, skill: String!): User
-    removeSkill(UserId: ID!, skill: String!): User
-    addJobToUser(userId: ID!, jobId: ID!): User
-    removeJobFromUser(userId: ID!, jobId: ID!): User
-    addPost(title: String!, text: String! ): Post
+    addRegimentToUser(userId: ID!, regimentId: ID!): User
+    addRegiment(name: String!, workouts: [WorkoutInput]): Regiment
+    removeRegimentFromUser(userId: ID!, regimentId: ID!): User
     login(userName: String!, password: String!): Auth
 }
 `;

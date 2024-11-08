@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { SIGN_OUT } from "../utils/mutations";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ADD_SKILL } from "../utils/mutations"; // Import the ADD_SKILL mutation
+import { } from "../utils/mutations"; // Import the ADD_SKILL mutation
 
 
 
