@@ -41,7 +41,7 @@ type Auth {
     User: User!
     oneUser(user: ID!): User
 
-    Regiments: [Regiment]!
+    userRegiments(userId: ID!): [Regiment]
     Regiment(regiment: ID!): Regiment
     
 

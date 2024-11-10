@@ -1,5 +1,24 @@
 import { gql } from "@apollo/client";
 
+
+
+export const GET_REGIMENTS = gql`
+  query UserRegiments($userId: ID!) {
+    userRegiments(userId: $userId) {
+      _id
+      name
+      workouts {
+        instructions
+        type
+        muscle
+        difficulty
+        equipment
+      }
+    }
+  }
+`;
+
+
 export const GET_JOB = gql`
 query User {
   User {
@@ -54,37 +73,4 @@ query GetUserById($userId: ID!) {
 }
 `;
 
-export const GET_ALL_JOBS = gql`
-query GetAllJobs {
-  jobs {
-    _id
-    name
-    description
-    pay
-  }
-}
-`;
 
-// export const GET_ALL_POSTS = gql`
-// query GetAllPosts {
-//   posts {
-//     _id
-//     userId
-//     content
-//     createdAt
-//   }
-// }
-// `;
-
-export const GET_ALL_SKILLS = gql`
-query GetAllSkills {
-  skills {
-    _id
-    name
-    users {
-      _id
-      userName
-    }
-  }
-}
-`;

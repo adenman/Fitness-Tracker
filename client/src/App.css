@@ -1,5 +1,6 @@
 :root {
   background-color: #20212b ;
+  color: white;
 }
 html{
   background-color: #20212b ;
@@ -20,12 +21,17 @@ html{
 }
 
 
+.green{
+  background-color: #24a567;
+}
+
+
 .blue-b{
   border-color: #03a7aa;
 }
 
 .back{
-  background-color: #03a7aa;
+  background-color: #106869;
 }
 
 

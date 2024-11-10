@@ -14,16 +14,18 @@ const resolvers = {
         jobs: user.jobs || []
       }));
     },
+
     Regiment: async (parent, { regiment }) => {
       return Regiment.findOne({ _id: regiment });
     },
 
 
 
-    // Fetch all posts
-    Regiments: async () => {
-      return await Regiment.find({});
-    }
+    // Fetch all Regiments
+    userRegiments: async (parent, { userId }) => {
+      const user = await User.findById(userId).populate('regiments');
+      return user.regiments;
+    },
   },
 
   Mutation: {
