@@ -19,6 +19,22 @@ export const GET_REGIMENTS = gql`
 `;
 
 
+export const REGIMENT = gql`
+  query Regiment($regiment: ID!) {
+    Regiment(regiment: $regiment) {
+      _id
+      name
+      workouts {
+        instructions
+        type
+        muscle
+        difficulty
+        equipment
+      }
+    }
+  }
+`;
+
 export const GET_JOB = gql`
 query User {
   User {

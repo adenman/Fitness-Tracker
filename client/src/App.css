@@ -63,7 +63,25 @@ html{
   color: white;
 }
 
-.a{
-
+.accordion {
+  --bs-accordion-bg: black;
+  --bs-accordion-color: black;
+  --bs-accordion-btn-bg: black;
+  --bs-accordion-btn-color: black;
+  --bs-accordion-active-bg: black;
+  --bs-accordion-active-color: black;
+  --bs-accordion-btn-focus-border-color: black;
+  --bs-accordion-btn-focus-box-shadow: none;
 }
 
+.accordion-button::after {
+  filter: brightness(0) invert(1);
+}
+
+.accordion-body {
+  color: black !important; /* Force text to stay white */
+}
+
+.accordion-button {
+  color: black !important; /* Force button text to stay white */
+}

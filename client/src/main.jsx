@@ -11,7 +11,7 @@ import LogIn from "./pages/LogIn";
 import SignUp from "./pages/signup";
 import Profile from "./pages/Profile";
 import NewWorkout from "./pages/newWorkout";
-import JobDetails from "./pages/JobDetails";
+import Regiment from "./pages/Regiment";
 
 
 
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/workout/:regimentId",
-        element: <JobDetails />,
+        element: <Regiment />,
       },
     ],
   },

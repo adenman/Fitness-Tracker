@@ -1,106 +1,83 @@
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import Auth from "./../utils/auth";
-import {GET_REGIMENTS} from '../utils/queries'
+import { REGIMENT } from '../utils/queries';
+import Accordion from 'react-bootstrap/Accordion';
 
-export default function Regiment() {
-  const { loading, error, data } = useQuery(GET_REGIMENTS, {
-    variables: { userId: Auth.getProfile()?.data?._id }
+export default function Regiment(){
+  const { regimentId } = useParams();
+  
+  const { loading, error, data } = useQuery(REGIMENT, {
+    variables: { regiment: regimentId },
   });
-  const navigate = useNavigate();
-  if (loading) return <p>Loading...</p>;
-
-  
-  
-  if (Auth.loggedIn()) {
-    return (
-      <>
-      <div>
-        <div className='flex justify-center items-center w-full relative'>
-        <div className='flex justify-center' style={{width: "120px", height: "120px"}}>
-          <img src="/flame.png" alt="Fitness Tracker Flame Logo" />
-          <div className="absolute top-20 right-26 bg-yellow rounded-full w-10 h-10 flex items-center justify-center">
-            <span className="text-black font-bold text-3xl">5</span>
-          </div>
-        </div>
-        </div>
-        <h2 className='text-white flex justify-center'>Day Streak</h2>
-      </div>
-
-
-      <div>
-        <div className='flex justify-center items-center w-full relative row'>
-          <div className='flex justify-center t' >
-            <h2>workout Name</h2>
-          </div>
-          
-          <h2 className='t flex justify-center'>Latest Workout</h2>
-        </div>
-      </div>
-
-
-      <div>
-      <div className="flex flex-wrap justify-center">
-  <h3 className='text-white rounded'>Your Workouts</h3>
-  </div>
-  {loading ? (
-    <p>Loading...</p>
-  ) : error ? (
-    <p>Error loading regiments</p>
-  ) : data?.userRegiments?.length ? (
+  if (loading) return <p className='t'>Loading...</p>;
+  if (error) return <p className='t'>Error loading regiment</p>;
+  return (
     <>
-      {data.userRegiments.map((regiment, index) => (
-  <div className="w-full" key={index}>
-    <button 
-      className="workout-card  test2 rounded p-4 my-2 mx-2 t back w-full"
-      onClick={() => navigate(`/workout/${regiment._id}`)}
-    >
-      <div className="flex justify-between items-center w-full">
-        <div>
-        <h2 className="text-xl justify-center font-bold w-full text-center">{regiment.name}</h2>
+      <div>
+      <div className='flex flex-wrap justify-center text-4xl t'>
+          {data?.Regiment?.name}
         </div>
-      </div>
-    </button>
-  </div>
-))}
-      <div className="w-full" >
-      <button 
-      className="workout-card border-2 blue-b rounded p-4 my-2 mx-2 t green w-full"
-      onClick={() => navigate(`/newWorkout`)}
-    >
-          <div className="flex justify-between items-center w-full">
-            <div>
-              <h2 className="text-xl font-bold">Add New Workout</h2>
-            </div>
+        <div className="flex flex-wrap justify-center">
+          <button className='rounded p-2 my-2 mx-2 t test w-1/4 text-black'>
+            start
+          </button>
+        </div>
+        {data?.Regiment?.workouts?.length ? (
+          <>
+            {data.Regiment.workouts.map((workout, index) => (
+              <div key={index}>
+                <div className="workout-card test2 rounded p-4 my-2 mx-2 t back w-full" onClick={() => document.getElementById(`workout-modal-${index}`).classList.remove('hidden')}>
+                  <h2 className="text-xl justify-center font-bold w-full text-center">
+                    {workout.type} - {workout.muscle}
+                  </h2>
+                </div>
+
+                <div id={`workout-modal-${index}`} tabIndex="-1" aria-hidden="false" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                  <div className="relative p-4 w-full max-w-2xl max-h-full">
+                    <div className="relative g rounded-lg shadow dark:bg-gray-700">
+                      <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 className="text-xl font-semibold t ">
+                          {workout.type} - {workout.muscle}
+                        </h3>
+                        <button type="button" className="t bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 " onClick={() => document.getElementById(`workout-modal-${index}`).classList.add('hidden')}>
+                          <svg className="w-3 h-3" aria-hidden="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                          </svg>
+                          <span className="sr-only">Close modal</span>
+                        </button>
+                      </div>
+                      <div className="p-4 md:p-5 space-y-4">
+                        <p className="text-base leading-relaxed t dark:text-gray-400">
+                          Difficulty: {workout.difficulty}
+                        </p>
+                          <p className="text-base leading-relaxed t dark:text-gray-400">
+                          Equipment: {workout.equipment}
+                        </p>
+
+                        <Accordion  defaultActiveKey="0">
+      <Accordion.Item eventKey="0">
+        <Accordion.Header >Instructions</Accordion.Header>
+        <Accordion.Body>
+        {workout.instructions}
+        </Accordion.Body>
+      </Accordion.Item>
+    </Accordion>
+                      </div>
+                      <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button onClick={() => document.getElementById(`workout-modal-${index}`).classList.add('hidden')} type="button" className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Finish</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className="text-center">
+            <p>No workouts found in this regiment</p>
           </div>
-        
-        </button>
+        )}
       </div>
     </>
-  ) : (
-    <div className="text-center">
-      <a href="/newWorkout" className="btn btn-primary">
-        Add New Regiment
-      </a>
-    </div>
-  )}
-</div>
-      </>
-    );
-  } else {
-    return (
-      <>
-      <div>
-        <h3 className='t rounded'>Workouts</h3>
-        <ul className="list-group rounded">
-          <li className="list-group-item text-center">
-            <button onClick={() => navigate('/LogIn')}>LogIn to view workouts</button>
-          </li>
-        </ul>
-        
-        </div>
-      </>
-    );
-  }
-}
+  );
+};
