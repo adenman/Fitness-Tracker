@@ -49,6 +49,16 @@ html{
   background-color: #20212b
 }
 
+
+.test{
+  background-color: #F7A072;
+}
+
+.test2{
+  background-color: #55868C;
+  border-color: #F7A072;
+}
+
 .t{
   color: white;
 }

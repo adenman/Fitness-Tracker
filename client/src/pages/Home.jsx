@@ -21,7 +21,7 @@ export default function Home() {
         <div className='flex justify-center' style={{width: "120px", height: "120px"}}>
           <img src="/flame.png" alt="Fitness Tracker Flame Logo" />
           <div className="absolute top-20 right-26 bg-yellow rounded-full w-10 h-10 flex items-center justify-center">
-            <span className="text-white font-bold text-3xl">5</span>
+            <span className="text-black font-bold text-3xl">5</span>
           </div>
         </div>
         </div>
@@ -53,12 +53,12 @@ export default function Home() {
       {data.userRegiments.map((regiment, index) => (
   <div className="w-full" key={index}>
     <button 
-      className="workout-card border-2 blue-b rounded p-4 my-2 mx-2 t back w-full"
+      className="workout-card  test2 rounded p-4 my-2 mx-2 t back w-full"
       onClick={() => navigate(`/workout/${regiment._id}`)}
     >
       <div className="flex justify-between items-center w-full">
         <div>
-          <h2 className="text-xl font-bold w-full">{regiment.name}</h2>
+        <h2 className="text-xl justify-center font-bold w-full text-center">{regiment.name}</h2>
         </div>
       </div>
     </button>
@@ -95,7 +95,7 @@ export default function Home() {
         <h3 className='t rounded'>Workouts</h3>
         <ul className="list-group rounded">
           <li className="list-group-item text-center">
-            <button onClick={() => navigate('/newWorkout')}>LogIn to view workouts</button>
+            <button onClick={() => navigate('/LogIn')}>LogIn to view workouts</button>
           </li>
         </ul>
         <Cal />

@@ -20,7 +20,7 @@ function NavTabs() {
 
   return (
     <div className="g mb-32">
-      <header className="absolute inset-x-0 top-0 z-50 r">
+      <header className="absolute inset-x-0 top-0 z-50 test">
         <nav aria-label="Global" className="flex items-center justify-between p-4">
           <div className="flex">
             <button onClick={handleShow}>
@@ -30,9 +30,9 @@ function NavTabs() {
             </button>
           </div>
           <div className="flex">
-            <a href="/login" className="text-white hover:text-gray-300">
-              LogIn
-            </a>
+            <button >
+              Login
+            </button>
           </div>
         </nav>
       </header>
