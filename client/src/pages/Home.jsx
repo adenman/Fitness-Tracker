@@ -98,7 +98,7 @@ export default function Home() {
             <button onClick={() => navigate('/LogIn')}>LogIn to view workouts</button>
           </li>
         </ul>
-        <Cal />
+        
         </div>
       </>
     );
