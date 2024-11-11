@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <NewWorkout />,
       },
       {
-        path: "/JobDetails/:jobId",
+        path: "/workout/:regimentId",
         element: <JobDetails />,
       },
     ],
