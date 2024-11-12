@@ -1,16 +1,31 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { REGIMENT } from '../utils/queries';
-import Accordion from 'react-bootstrap/Accordion';
+
+import ReadMoreReact from 'read-more-react';
+import Stopwatch from '../components/Stopwatch';
+import DragDrop from '../components/DragDrop';
+import { useState } from 'react';
+
 
 export default function Regiment(){
   const { regimentId } = useParams();
-  
+  const [finishedWorkouts, setFinishedWorkouts] = useState({});
   const { loading, error, data } = useQuery(REGIMENT, {
     variables: { regiment: regimentId },
   });
   if (loading) return <p className='t'>Loading...</p>;
   if (error) return <p className='t'>Error loading regiment</p>;
+
+  
+
+  // Function to handle workout finish
+  const handleFinish = (index) => {
+    setFinishedWorkouts((prev) => ({
+      ...prev,
+      [index]: true, // Mark the workout as finished
+    }));
+  };
   return (
     <>
       <div>
@@ -18,18 +33,21 @@ export default function Regiment(){
           {data?.Regiment?.name}
         </div>
         <div className="flex flex-wrap justify-center">
-          <button className='rounded p-2 my-2 mx-2 t test w-1/4 text-black'>
-            start
-          </button>
+          <Stopwatch />
         </div>
         {data?.Regiment?.workouts?.length ? (
           <>
             {data.Regiment.workouts.map((workout, index) => (
               <div key={index}>
-                <div className="workout-card test2 rounded p-4 my-2 mx-2 t back w-full" onClick={() => document.getElementById(`workout-modal-${index}`).classList.remove('hidden')}>
-                  <h2 className="text-xl justify-center font-bold w-full text-center">
-                    {workout.type} - {workout.muscle}
-                  </h2>
+                <p>.{index + 1}</p>
+                <div
+  className={`text-xl justify-center font-bold w-full text-center ${
+    finishedWorkouts[index] ? 'finished-card' : 'unfinished-card'} workout-card test2 rounded p-4 my-2 mx-2 t back w-full`}
+  onClick={() => document.getElementById(`workout-modal-${index}`).classList.remove('hidden')}
+>
+                <h2>
+  {workout.type} - {workout.muscle}
+</h2>
                 </div>
 
                 <div id={`workout-modal-${index}`} tabIndex="-1" aria-hidden="false" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -53,24 +71,36 @@ export default function Regiment(){
                           <p className="text-base leading-relaxed t dark:text-gray-400">
                           Equipment: {workout.equipment}
                         </p>
+                        <ReadMoreReact className='t' text={workout.instructions}
+                          min={80}
+                          ideal={100}
+                          max={200}
+                          readMoreText="More..." style={{
+                            color: '#333',
+                            fontSize: '16px',
+                            lineHeight: '1.5',
+                          }}/>
 
-                        <Accordion  defaultActiveKey="0">
-      <Accordion.Item eventKey="0">
-        <Accordion.Header >Instructions</Accordion.Header>
-        <Accordion.Body>
-        {workout.instructions}
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
+                        
                       </div>
                       <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <button onClick={() => document.getElementById(`workout-modal-${index}`).classList.add('hidden')} type="button" className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Finish</button>
+                      <button
+                          onClick={() => { handleFinish(index); document.getElementById(`workout-modal-${index}`).classList.add('hidden'); }}
+                          type="button"
+                          className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                          Finish
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
+
+            <div>
+              <DragDrop/>
+            </div>
           </>
         ) : (
           <div className="text-center">

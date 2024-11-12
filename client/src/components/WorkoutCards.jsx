@@ -1,6 +1,8 @@
 import { Card } from "flowbite-react";
 import { useState, useEffect } from "react";
 import { useWorkout } from './context';
+import ReadMoreReact from 'read-more-react';
+
 
 function WorkoutCards() {
   const [exercises, setExercises] = useState([]);
@@ -102,7 +104,15 @@ function WorkoutCards() {
                 
                 <div className="flex-grow">
                   <p className="text-base">
-                    {exercise.instructions}
+                  <ReadMoreReact className='t' text={exercise.instructions}
+                          min={80}
+                          ideal={100}
+                          max={200}
+                          readMoreText="More..." style={{
+                            color: '#333',
+                            fontSize: '16px',
+                            lineHeight: '1.5',
+                          }}/>
                   </p>
                 </div>
               </div>

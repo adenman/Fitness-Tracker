@@ -54,6 +54,8 @@
     "react-big-calendar": "^1.15.0",
     "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
+    "react-drag-drop-files": "^2.4.0",
+    "read-more-react": "^1.0.10",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"
   }

@@ -63,25 +63,83 @@ html{
   color: white;
 }
 
-.accordion {
-  --bs-accordion-bg: black;
-  --bs-accordion-color: black;
-  --bs-accordion-btn-bg: black;
-  --bs-accordion-btn-color: black;
-  --bs-accordion-active-bg: black;
-  --bs-accordion-active-color: black;
-  --bs-accordion-btn-focus-border-color: black;
-  --bs-accordion-btn-focus-box-shadow: none;
+
+
+.stopwatch-time {
+  text-align: center;
+  color: #fff;
+  font-size: 30px;
 }
 
-.accordion-button::after {
-  filter: brightness(0) invert(1);
+.stopwatch-buttons {
+  display: flex;
+  justify-content: center;
 }
 
-.accordion-body {
-  color: black !important; /* Force text to stay white */
+.stopwatch-button.running {
+  background-color: #28a745; 
+  color: white;
 }
 
-.accordion-button {
-  color: black !important; /* Force button text to stay white */
+.stopwatch-button:not(.running) {
+  background-color: #F7A072;
+  color: black;
+}
+
+.stopwatch-buttons button {
+  margin: 10px;
+  border: none;
+  padding: 10px 30px;
+  cursor: pointer;
+  color: black;
+  border-radius: 10px;
+}
+
+
+
+
+
+
+
+
+
+/* Styles for the drag-drop container */
+.drag-drop-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+
+/* Custom drop area styling */
+.custom-drop-area {
+  width: 200px ; 
+  padding: 10px;
+  border: 2px dashed #55868C ;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #F7A072;
+  color: #F7A072;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.custom-drop-area:hover {
+  background-color: #2b585e;
+}
+
+.custom-drop-area p {
+  margin: 0;
+}
+
+
+
+
+.finished-card {
+  background-color: #19363a; /* Green */
+  color: white;
+}
+.unfinished-card{
+  background-color: #55868C; /* Green */
+  color: white;
 }
