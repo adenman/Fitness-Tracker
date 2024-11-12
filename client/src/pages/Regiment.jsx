@@ -1,31 +1,35 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { REGIMENT } from '../utils/queries';
-
 import ReadMoreReact from 'read-more-react';
 import Stopwatch from '../components/Stopwatch';
 import DragDrop from '../components/DragDrop';
 import { useState } from 'react';
 
-
-export default function Regiment(){
+export default function Regiment() {
   const { regimentId } = useParams();
   const [finishedWorkouts, setFinishedWorkouts] = useState({});
+  const [fileInfo, setFileInfo] = useState(null);
+
   const { loading, error, data } = useQuery(REGIMENT, {
     variables: { regiment: regimentId },
   });
+
   if (loading) return <p className='t'>Loading...</p>;
   if (error) return <p className='t'>Error loading regiment</p>;
 
-  
+  const handleFileChange = (info) => {
+    setFileInfo(info);
+  };
 
-  // Function to handle workout finish
   const handleFinish = (index) => {
     setFinishedWorkouts((prev) => ({
       ...prev,
-      [index]: true, // Mark the workout as finished
+      [index]: true,
     }));
   };
+
+
   return (
     <>
       <div>
@@ -41,13 +45,13 @@ export default function Regiment(){
               <div key={index}>
                 <p>.{index + 1}</p>
                 <div
-  className={`text-xl justify-center font-bold w-full text-center ${
-    finishedWorkouts[index] ? 'finished-card' : 'unfinished-card'} workout-card test2 rounded p-4 my-2 mx-2 t back w-full`}
-  onClick={() => document.getElementById(`workout-modal-${index}`).classList.remove('hidden')}
->
-                <h2>
-  {workout.type} - {workout.muscle}
-</h2>
+                  className={`text-xl justify-center font-bold w-full text-center ${
+                    finishedWorkouts[index] ? 'finished-card' : 'unfinished-card'} workout-card test2 rounded p-4 my-2 mx-2 t back w-full`}
+                  onClick={() => document.getElementById(`workout-modal-${index}`).classList.remove('hidden')}
+                >
+                                <h2>
+                  {workout.type} - {workout.muscle}
+                </h2>
                 </div>
 
                 <div id={`workout-modal-${index}`} tabIndex="-1" aria-hidden="false" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -99,8 +103,16 @@ export default function Regiment(){
             ))}
 
             <div>
-              <DragDrop/>
+              <DragDrop onFileChange={handleFileChange}/>
             </div>
+
+            {fileInfo && (
+              <div className="file-info-display" style={{ marginTop: "10px" }}>
+                <p><strong>File Name:</strong> {fileInfo.name}</p>
+                <p><strong>File Size:</strong> {fileInfo.size} KB</p>
+                <p><strong>File Type:</strong> {fileInfo.type}</p>
+              </div>
+            )}
           </>
         ) : (
           <div className="text-center">

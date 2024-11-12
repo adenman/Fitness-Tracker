@@ -35,6 +35,8 @@ const resolvers = {
 
       return { token, user };
     },
+
+    // compleateWorkout: async
     
     async login(parent, { username, password }, context) {
       const user = await authenticateUser(username, password);
