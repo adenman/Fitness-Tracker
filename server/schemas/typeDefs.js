@@ -30,7 +30,7 @@ const typeDefs = gql`
   name: String
   progressPic: String
   date: String
-  time: Int
+  time: String
 }
 
   input WorkoutInput {
@@ -49,7 +49,7 @@ const typeDefs = gql`
 
   type Query {
     User: User!
-    oneUser(user: ID!): User
+    oneUser(userId: ID!): User
     userRegiments(userId: ID!): [Regiment]
     Regiment(regiment: ID!): Regiment
   }
@@ -59,7 +59,7 @@ const typeDefs = gql`
     addRegimentToUser(userId: ID!, regimentId: ID!): User
     addRegiment(name: String!, workouts: [WorkoutInput]): Regiment
     addCompletedRegimentToUser(userId: ID!, completedRegimentId: ID!): User  # Fixed typo in ID variable name
-    addCompletedRegiment(name: String!, progressPic: String, date: String, time: Int): CompletedRegiment
+    addCompletedRegiment(name: String!, progressPic: String, date: String, time: String): CompletedRegiment
     removeRegimentFromUser(userId: ID!, regimentId: ID!): User
     login(userName: String!, password: String!): Auth
   }

@@ -12,6 +12,21 @@ const resolvers = {
         jobs: user.jobs || []
       }));
     },
+
+    oneUser: async (parent, { userId }) => {
+      try {
+        const user = await User.findById(userId).populate('regiments').populate('completedRegiments');
+        if (!user) {
+          throw new Error('User not found');
+        }
+        return user;
+      } catch (error) {
+        throw new Error(`Failed to fetch user: ${error.message}`);
+      }
+    },
+
+
+
     Regiment: async (parent, { regiment }) => {
       return Regiment.findOne({ _id: regiment });
     },

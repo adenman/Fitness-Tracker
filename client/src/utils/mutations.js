@@ -36,7 +36,7 @@ export const ADD_REGIMENT_TO_USER = gql`
 `;
 
 export const COMPLETED_REGIMENT = gql`
-  mutation AddCompletedRegiment($name: String!, $progressPic: String, $date: String, $time: Int) {
+  mutation AddCompletedRegiment($name: String!, $progressPic: String, $date: String, $time: String) {
   addCompletedRegiment(name: $name, progressPic: $progressPic, date: $date, time: $time) {
     _id
     date

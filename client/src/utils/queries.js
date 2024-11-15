@@ -35,56 +35,34 @@ export const REGIMENT = gql`
   }
 `;
 
-export const GET_JOB = gql`
-query User {
-  User {
-    _id
-    userName
-  }
-}
-  query Job {
-  Job {
-    _id
-    name
-    description
-    pay
-  }
-}
-`;
 
-export const QUERY_ONE_JOB = gql`
-  query OneJob($jobId: ID!) {
-  OneJob(jobId: $jobId) {
-    _id
-    name
-    description
-    pay
-  }
-}
-`;
-
-export const GET_ALL_USERS = gql`
-query GetAllUsers {
-  users {
-    _id
-    userName
-    password
-  }
-}
-`;
 
 export const GET_USER_BY_ID = gql`
-query GetUserById($userId: ID!) {
-  user(id: $userId) {
+query OneUser($userId: ID!) {
+  oneUser(userId: $userId) {
     _id
     userName
-    skills
-    jobs {
+    regiment {
+      name
+      _id
+      workouts {
+        difficulty
+        equipment
+        instructions
+        muscle
+        name
+        type
+      }
+    }
+    completedRegiments {
       _id
       name
-      description
-      pay
+      date
+      time
+      progressPic
     }
+    password
+    pfp
   }
 }
 `;

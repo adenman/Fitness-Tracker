@@ -3,32 +3,27 @@ import { useParams } from "react-router-dom";
 import { SIGN_OUT } from "../utils/mutations";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { } from "../utils/mutations"; // Import the ADD_SKILL mutation
+import {GET_USER_BY_ID } from "../utils/queries"; // Import the ADD_SKILL mutation
+import DragDrop from '../components/DragDrop';
 
-
-
-const GET_ONE_USER = gql`
-query OneUser($user: ID!) {
-  oneUser(user: $user) {
-    _id
-    userName
-    posts {
-      _id
-      text
-      title
-    }
-    skills
-    pfp
-  }
-}`;
 
 export default function Profile({ onLogout }) {
   const { userId } = useParams();
   const navigate = useNavigate(); // Initialize useNavigate
-
-  const { loading, error, data } = useQuery(GET_ONE_USER, {
-    variables: { user: userId },
+  const [fileInfo, setFileInfo] = useState(null);
+  const { loading, error, data } = useQuery(GET_USER_BY_ID, {
+    variables: { userId: userId },
   });
+
+
+  const handleFileChange = (info) => {
+    setFileInfo(info);
+  };
+
+
+
+  
+
 
   const [signOut] = useMutation(SIGN_OUT, {
     onCompleted: () => {      
@@ -39,15 +34,7 @@ export default function Profile({ onLogout }) {
     },
   });
 
-  const [addSkill] = useMutation(ADD_SKILL, {
-    onCompleted: (data) => {
-      console.log("Skill added:", data.addSkill);
-      // Optionally, you can update the user skills in your local state or refetch
-    },
-    onError: (err) => {
-      console.error("Error adding skill:", err);
-    },
-  });
+ 
 
   const [skills, setSkills] = useState("");
 
@@ -65,39 +52,22 @@ export default function Profile({ onLogout }) {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error fetching profile: {error.message}</p>;
 
-  const { userName } = data.oneUser;
+  
 
   return (
     <div className="pro">
-      <h1>Welcome {userName}</h1>
-      
-
-      <div className="skill">
-        <h2>Add Your Skills</h2>
-        <form onSubmit={handleSkillSubmit}>
-          <input
-            type="text"
-            value={skills}
-            onChange={(e) => setSkills(e.target.value)}
-            placeholder="Enter your skills"
-          />
-          <button type="submit">Submit Skills</button>
-        </form>
-        <div className="skills">
-          <h2>Your Skills</h2>
-          <ul>
-            {data.oneUser.skills.map((skill, index) => (
-              <li key={index}>{skill}</li>
-            ))}
-          </ul>
+      {/* Remove or comment out any standalone img tags */}
+      {data.oneUser.completedRegiments.map((regiment, index) => (
+        <div key={index}>
+          {regiment.progressPic && (
+            <img 
+              src={regiment.progressPic} 
+              alt={`Progress pic for ${regiment.name}`} 
+              style={{ maxWidth: '300px', maxHeight: '300px' }} 
+            />
+          )}
         </div>
-        <button onClick={() => {
-          signOut();
-          navigate('/Signin');
-        }}>
-          Log out
-        </button>
-      </div>
+      ))}
     </div>
   );
 }

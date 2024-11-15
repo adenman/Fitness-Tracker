@@ -28,35 +28,74 @@ export default function Regiment() {
   };
 
   const handleSaveRegiment = async () => {
+
     if (!Auth.loggedIn()) {
+      console.error('User not logged in');
       return;
     }
     
     const profile = Auth.getProfile();
     const userId = profile.data._id;
-    
     try {
+      // Compress image if it's too large
+      const compressImage = async (base64Str, maxWidth = 800, maxHeight = 800) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = base64Str;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+  
+            // Calculate new dimensions
+            if (width > height) {
+              if (width > maxWidth) {
+                height *= maxWidth / width;
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width *= maxHeight / height;
+                height = maxHeight;
+              }
+            }
+  
+            canvas.width = width;
+            canvas.height = height;
+  
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+  
+            resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality
+          };
+        });
+      };
+  
+      // Compress the image if it exists
+      const compressedImage = fileInfo 
+        ? await compressImage(fileInfo.base64) 
+        : null;
+  
       const regimentResponse = await addCompletedRegiment({
         variables: {
           name: data?.Regiment?.name || 'Unnamed Regiment',
           date: new Date().toISOString(),
-          time: stopwatchTime || 0,  // Provide a default value
-          progressPic: fileInfo ? fileInfo.name : null,  // Convert to string or null
+          time: stopwatchTime || '0:00:00:00',
+          progressPic: compressedImage || null,
         }
       });
 
       const addToUser = await addCompletedRegimentToUser({
         variables: {
           userId: userId,
-          completedRegimentId: regimentId,
+          completedRegimentId: regimentResponse.data.addCompletedRegiment._id, // Use the ID from the first mutation
         }
-      })
+      });
   
-      // Rest of the code...
     } catch (err) {
-      console.error("Mutation Error:", err.networkError?.result?.errors);
+      console.error("Full Error Object:", err);
     }
-  }
+  };
 
   const handleFinish = (index) => {
     setFinishedWorkouts((prev) => ({
@@ -73,7 +112,12 @@ export default function Regiment() {
           {data?.Regiment?.name}
         </div>
         <div className="flex flex-wrap justify-center">
-          <Stopwatch />
+        <Stopwatch 
+  onTimeUpdate={(timeString) => {
+    console.log("Stopwatch Time String:", timeString);
+    setstopwatchTime(timeString);
+  }} 
+/>
         </div>
         {data?.Regiment?.workouts?.length ? (
           <>

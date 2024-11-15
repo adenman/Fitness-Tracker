@@ -11,7 +11,7 @@ const CompletedRegimentSchema = new Schema({
     type: String
   },
   time: {
-    type: Number
+    type: String
   },
   date: {
     type: Date,

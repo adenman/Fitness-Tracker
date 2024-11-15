@@ -16,6 +16,15 @@ const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  bodyParser: {
+    json: {
+      limit: '50mb'
+    },
+    urlencoded: {
+      limit: '50mb',
+      extended: true
+    }
+  }
 });
 
 app.use(cors({
@@ -26,7 +35,7 @@ app.use(cors({
 const startApolloServer = async () => {
   await server.start();
 
-  app.use(express.urlencoded({ extended: false }));
+  app.use(express.urlencoded({ limit: '50mb', extended: false }));
   app.use(express.json());
 
   // Serve up static assets

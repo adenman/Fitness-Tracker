@@ -19,7 +19,10 @@ const Stopwatch = ({ onTimeUpdate }) => {
   // Method to start and stop timer
   const startAndStop = () => {
     if (isRunning && onTimeUpdate) {
-      onTimeUpdate(time);  // Pass the time back when stopping
+      // Format time as a string with hours:minutes:seconds:milliseconds
+      const formattedTimeString = `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().padStart(2, "0")}`;
+      
+      onTimeUpdate(formattedTimeString);
     }
     setIsRunning(!isRunning);
   };
