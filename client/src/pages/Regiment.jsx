@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { REGIMENT } from '../utils/queries';
-import { COMPLEATED_REGIMENT, ADD_COMPLETED_REGIMENT_TO_USER } from '../utils/mutations';
+import { COMPLETED_REGIMENT, ADD_COMPLETED_REGIMENT_TO_USER } from '../utils/mutations';
 import ReadMoreReact from 'read-more-react';
 import Stopwatch from '../components/Stopwatch';
 import DragDrop from '../components/DragDrop';
@@ -14,7 +14,7 @@ export default function Regiment() {
   const [stopwatchTime, setstopwatchTime] = useState();
   const [finishedWorkouts, setFinishedWorkouts] = useState({});
   const [fileInfo, setFileInfo] = useState(null);
-  const [addCompletedRegiment] = useMutation(COMPLEATED_REGIMENT);
+  const [addCompletedRegiment] = useMutation(COMPLETED_REGIMENT);
   const [addCompletedRegimentToUser] = useMutation(ADD_COMPLETED_REGIMENT_TO_USER);
   const { loading, error, data } = useQuery(REGIMENT, {
     variables: { regiment: regimentId },
@@ -34,32 +34,29 @@ export default function Regiment() {
     
     const profile = Auth.getProfile();
     const userId = profile.data._id;
-
+    
     try {
       const regimentResponse = await addCompletedRegiment({
         variables: {
-          name: data?.Regiment?.name,
+          name: data?.Regiment?.name || 'Unnamed Regiment',
           date: new Date().toISOString(),
-          time: stopwatchTime,  
-          progressPic: fileInfo,
-          workouts: data?.Regiment?.workouts.map(workout => ({
-            name: workout.name,
-          }))
+          time: stopwatchTime || 0,  // Provide a default value
+          progressPic: fileInfo ? fileInfo.name : null,  // Convert to string or null
         }
       });
 
-      if (regimentResponse.data) {
-        await addCompletedRegimentToUser({
-          variables: {
-            userId: userId,
-            completedRegimentId: regimentResponse.data.addCompletedRegiment._id
-          }
-        });
-      }
+      const addToUser = await addCompletedRegimentToUser({
+        variables: {
+          userId: userId,
+          completedRegimentId: regimentId,
+        }
+      })
+  
+      // Rest of the code...
     } catch (err) {
-      console.error("Error details:", err.message);
+      console.error("Mutation Error:", err.networkError?.result?.errors);
     }
-  };
+  }
 
   const handleFinish = (index) => {
     setFinishedWorkouts((prev) => ({
@@ -124,6 +121,14 @@ export default function Regiment() {
                             fontSize: '16px',
                             lineHeight: '1.5',
                           }}/>
+
+                        <button
+                        onClick={() => {handleFinish();}}
+                        type="button"
+                        className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                          Finish
+                        </button>
                       </div>
                       
                     </div>

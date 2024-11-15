@@ -26,7 +26,6 @@ export default function Home() {
         </div>
         </div>
         <h2 className='text-white flex justify-center'>Day Streak</h2>
-        <h2>hello </h2>
       </div>
 
 

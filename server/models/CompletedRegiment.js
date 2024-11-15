@@ -1,16 +1,11 @@
 const { Schema, model } = require('mongoose');
 
-const CompleatedRegimentSchema = new Schema({
+const CompletedRegimentSchema = new Schema({
   
   name: {
     type: String,
     required: true,
     trim: true,
-  },
-  workouts: {
-    name: {
-      type: String,
-    },
   },
   progressPic:{
     type: String
@@ -24,6 +19,6 @@ const CompleatedRegimentSchema = new Schema({
   }
 });
 
-const CompleatedRegiment = model('CompleatedRegiment', CompleatedRegimentSchema);
+const CompleatedRegiment = model('CompletedRegiment', CompletedRegimentSchema);
 
 module.exports = CompleatedRegiment;

@@ -7,7 +7,7 @@ const typeDefs = gql`
     pfp: String
     password: String
     regiment: [Regiment]
-    CompletedRegiment: [CompletedRegiment]
+    completedRegiments: [CompletedRegiment] 
   }
 
   type Workout {
@@ -20,55 +20,49 @@ const typeDefs = gql`
   }
 
   type Regiment {
-  _id: ID
-  name: String
-  workouts: [Workout]
+    _id: ID
+    name: String
+    workouts: [Workout]
   }
 
   type CompletedRegiment {
   _id: ID
   name: String
-  workouts: [Workout]
   progressPic: String
   date: String
   time: Int
-  }
+}
 
-input WorkoutInput {
+  input WorkoutInput {
     name: String
     instructions: String
     type: String
     muscle: String
     difficulty: String
     equipment: String
-}
+  }
 
-type Auth {
-  token: ID
-  user: User
-}
+  type Auth {
+    token: ID
+    user: User
+  }
 
   type Query {
     User: User!
     oneUser(user: ID!): User
-
     userRegiments(userId: ID!): [Regiment]
     Regiment(regiment: ID!): Regiment
-    
-
-    
   }
-
 
   type Mutation {
     addUser(userName: String!, password: String!): Auth
     addRegimentToUser(userId: ID!, regimentId: ID!): User
     addRegiment(name: String!, workouts: [WorkoutInput]): Regiment
-    addCompletedRegimentToUser(userId: ID!, CompletedRegimentId: ID!): User
-    addCompletedRegiment(name: String!, workouts: [WorkoutInput], progressPic: String, Date: String, time: Int): CompletedRegiment
+    addCompletedRegimentToUser(userId: ID!, completedRegimentId: ID!): User  # Fixed typo in ID variable name
+    addCompletedRegiment(name: String!, progressPic: String, date: String, time: Int): CompletedRegiment
     removeRegimentFromUser(userId: ID!, regimentId: ID!): User
     login(userName: String!, password: String!): Auth
-}
+  }
 `;
 
 module.exports = typeDefs;

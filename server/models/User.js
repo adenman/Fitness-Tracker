@@ -28,10 +28,10 @@ const userSchema = new Schema(
         default: [],
       },
     ],
-    compleatedRegiments: [
+    completedRegiments: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'CompleatedRegiment',
+        ref: 'CompletedRegiment',
         default: [],
       },
     ],
