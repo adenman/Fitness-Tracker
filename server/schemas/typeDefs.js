@@ -56,6 +56,7 @@ const typeDefs = gql`
 
   type Mutation {
     addUser(userName: String!, password: String!): Auth
+    updateUser(userId: ID!, userName: String, password: String): User
     addRegimentToUser(userId: ID!, regimentId: ID!): User
     addRegiment(name: String!, workouts: [WorkoutInput]): Regiment
     addCompletedRegimentToUser(userId: ID!, completedRegimentId: ID!): User  # Fixed typo in ID variable name

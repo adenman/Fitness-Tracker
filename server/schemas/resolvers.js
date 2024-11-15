@@ -1,8 +1,7 @@
 const { User, Regiment, CompletedRegiment } = require('../models');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
-const { generateToken } = require('../utils/tokenGen');
-
+const bcrypt = require('bcrypt');
 const resolvers = {
   Query: {
     User: async () => {
@@ -55,6 +54,39 @@ const resolvers = {
       }
       const token = signToken(user);
       return { token, user };
+    },
+
+    updateUser: async (parent, { userId, userName, password }) => {
+      try {
+        // If password is provided, hash it before updating
+        let hashedPassword;
+        if (password) {
+          const saltRounds = 10;
+          hashedPassword = await bcrypt.hash(password, saltRounds);
+        }
+    
+        const updatedUser = await User.findByIdAndUpdate(
+          userId, 
+          { 
+            $set: { 
+              ...(userName && { userName: userName }),
+              ...(hashedPassword && { password: hashedPassword }) 
+            } 
+          },
+          { 
+            new: true,  // Return the updated document
+            runValidators: true  // Run mongoose validation
+          }
+        );
+    
+        if (!updatedUser) {
+          throw new Error('User not found');
+        }
+    
+        return updatedUser;
+      } catch (error) {
+        throw new Error(`Failed to update user: ${error.message}`);
+      }
     },
 
     addRegiment: async (parent, { name, workouts }) => {
