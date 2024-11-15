@@ -1,4 +1,4 @@
-const { User, Regiment } = require('../models');
+const { User, Regiment, CompletedRegiment } = require('../models');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 const { generateToken } = require('../utils/tokenGen');
@@ -78,6 +78,36 @@ const resolvers = {
 
       return regiment;
     },
+
+    addCompletedRegiment: async (parent, { name, workouts, date, time  }) => {
+      
+
+      const CompletedRegiment = await CompletedRegiment.create({
+        name, workouts, date, time 
+      });
+
+      return CompletedRegiment;
+    },
+    
+    addCompletedRegimentToUser: async (parent, { userId, compleatedRegimentId }) => {
+      try {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: userId },
+          { $addToSet: { CompleatedRegiment: compleatedRegimentId } }, 
+          { new: true }
+        ).populate('CompleatedRegiment');
+    
+        if (!updatedUser) {
+          throw new Error('User not found');
+        }
+    
+        return updatedUser;
+      } catch (error) {
+        throw new Error(`Failed to add Compleated Regiment: ${error.message}`);
+      }
+    },
+
+    
 
     addRegimentToUser: async (parent, { userId, regimentId }) => {
       try {

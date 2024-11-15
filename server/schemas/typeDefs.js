@@ -7,9 +7,11 @@ const typeDefs = gql`
     pfp: String
     password: String
     regiment: [Regiment]
+    CompletedRegiment: [CompletedRegiment]
   }
 
   type Workout {
+    name: String
     instructions: String
     type: String
     muscle: String
@@ -21,6 +23,15 @@ const typeDefs = gql`
   _id: ID
   name: String
   workouts: [Workout]
+  }
+
+  type CompletedRegiment {
+  _id: ID
+  name: String
+  workouts: [Workout]
+  progressPic: String
+  date: String
+  time: Int
   }
 
 input WorkoutInput {
@@ -53,6 +64,8 @@ type Auth {
     addUser(userName: String!, password: String!): Auth
     addRegimentToUser(userId: ID!, regimentId: ID!): User
     addRegiment(name: String!, workouts: [WorkoutInput]): Regiment
+    addCompletedRegimentToUser(userId: ID!, CompletedRegimentId: ID!): User
+    addCompletedRegiment(name: String!, workouts: [WorkoutInput], progressPic: String, Date: String, time: Int): CompletedRegiment
     removeRegimentFromUser(userId: ID!, regimentId: ID!): User
     login(userName: String!, password: String!): Auth
 }

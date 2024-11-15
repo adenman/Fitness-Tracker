@@ -77,12 +77,12 @@ html{
 }
 
 .stopwatch-button.running {
-  background-color: #28a745; 
+  background-color: red; 
   color: white;
 }
 
 .stopwatch-button:not(.running) {
-  background-color: #F7A072;
+  background-color: #28a745;
   color: black;
 }
 

@@ -28,6 +28,13 @@ const userSchema = new Schema(
         default: [],
       },
     ],
+    compleatedRegiments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'CompleatedRegiment',
+        default: [],
+      },
+    ],
    
   },
   {

@@ -40,6 +40,41 @@ export const ADD_REGIMENT_TO_USER = gql`
     }
   }
 `;
+
+export const COMPLEATED_REGIMENT = gql`
+  mutation AddCompletedRegiment($name: String!, $workouts: [WorkoutInput], $progressPic: String, $date: String, $time: Int) {
+  addCompletedRegiment(name: $name, workouts: $workouts, progressPic: $progressPic, Date: $date, time: $time) {
+    _id
+    date
+    name
+    progressPic
+    time
+    workouts {
+      name
+    }
+  }
+}
+`;
+
+export const ADD_COMPLETED_REGIMENT_TO_USER = gql`
+ mutation AddCompletedRegimentToUser($userId: ID!, $completedRegimentId: ID!) {
+  addCompletedRegimentToUser(userId: $userId, CompletedRegimentId: $completedRegimentId) {
+    _id
+    CompletedRegiment {
+      _id
+      date
+      name
+      progressPic
+      time
+      workouts {
+        name
+        muscle
+      }
+    }
+  }
+}
+`;
+
 export const ADD_REGIMENT = gql`
   mutation AddRegiment($name: String!, $workouts: [WorkoutInput]) {
     addRegiment(name: $name, workouts: $workouts) {

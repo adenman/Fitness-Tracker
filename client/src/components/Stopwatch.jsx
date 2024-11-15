@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Stopwatch = () => {
+const Stopwatch = ({ onTimeUpdate }) => {
   // state to store time
   const [time, setTime] = useState(0);
 
@@ -10,27 +10,17 @@ const Stopwatch = () => {
   useEffect(() => {
     let intervalId;
     if (isRunning) {
-      // setting time from 0 to 1 every 10 milisecond using javascript setInterval method
-      intervalId = setInterval(() => setTime(time + 1), 10);
-
+      // increment time every 10 milliseconds
+      intervalId = setInterval(() => setTime(prevTime => prevTime + 1), 10);
     }
     return () => clearInterval(intervalId);
-  }, [isRunning, time]);
-
-  // Hours calculation
-  const hours = Math.floor(time / 360000);
-
-  // Minutes calculation
-  const minutes = Math.floor((time % 360000) / 6000);
-
-  // Seconds calculation
-  const seconds = Math.floor((time % 6000) / 100);
-
-  // Milliseconds calculation
-  const milliseconds = time % 100;
+  }, [isRunning]);
 
   // Method to start and stop timer
   const startAndStop = () => {
+    if (isRunning && onTimeUpdate) {
+      onTimeUpdate(time);  // Pass the time back when stopping
+    }
     setIsRunning(!isRunning);
   };
 
@@ -38,6 +28,13 @@ const Stopwatch = () => {
   const reset = () => {
     setTime(0);
   };
+
+  // Time calculations
+  const hours = Math.floor(time / 360000);
+  const minutes = Math.floor((time % 360000) / 6000);
+  const seconds = Math.floor((time % 6000) / 100);
+  const milliseconds = time % 100;
+
   return (
     <div className="stopwatch-container">
       <p className="stopwatch-time">
@@ -47,12 +44,11 @@ const Stopwatch = () => {
       </p>
       <div className="stopwatch-buttons">
         <button
-  className={`stopwatch-button ${isRunning ? 'running' : ''}`}
-  onClick={startAndStop}
->
-  {isRunning ? "Finish" : "Start"}
-</button>
-        
+          className={`stopwatch-button ${isRunning ? 'running' : ''}`}
+          onClick={startAndStop}
+        >
+          {isRunning ? "Stop" : "Start"}
+        </button>
       </div>
     </div>
   );

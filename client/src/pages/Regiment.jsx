@@ -1,16 +1,21 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { REGIMENT } from '../utils/queries';
+import { COMPLEATED_REGIMENT, ADD_COMPLETED_REGIMENT_TO_USER } from '../utils/mutations';
 import ReadMoreReact from 'read-more-react';
 import Stopwatch from '../components/Stopwatch';
 import DragDrop from '../components/DragDrop';
 import { useState } from 'react';
+import Auth from '../utils/auth';
 
 export default function Regiment() {
   const { regimentId } = useParams();
+  const [stopwatchTime, setstopwatchTime] = useState();
   const [finishedWorkouts, setFinishedWorkouts] = useState({});
   const [fileInfo, setFileInfo] = useState(null);
-
+  const [addCompletedRegiment] = useMutation(COMPLEATED_REGIMENT);
+  const [addCompletedRegimentToUser] = useMutation(ADD_COMPLETED_REGIMENT_TO_USER);
   const { loading, error, data } = useQuery(REGIMENT, {
     variables: { regiment: regimentId },
   });
@@ -20,6 +25,40 @@ export default function Regiment() {
 
   const handleFileChange = (info) => {
     setFileInfo(info);
+  };
+
+  const handleSaveRegiment = async () => {
+    if (!Auth.loggedIn()) {
+      return;
+    }
+    
+    const profile = Auth.getProfile();
+    const userId = profile.data._id;
+
+    try {
+      const regimentResponse = await addCompletedRegiment({
+        variables: {
+          name: data?.Regiment?.name,
+          date: new Date().toISOString(),
+          time: stopwatchTime,  
+          progressPic: fileInfo,
+          workouts: data?.Regiment?.workouts.map(workout => ({
+            name: workout.name,
+          }))
+        }
+      });
+
+      if (regimentResponse.data) {
+        await addCompletedRegimentToUser({
+          variables: {
+            userId: userId,
+            completedRegimentId: regimentResponse.data.addCompletedRegiment._id
+          }
+        });
+      }
+    } catch (err) {
+      console.error("Error details:", err.message);
+    }
   };
 
   const handleFinish = (index) => {
@@ -53,6 +92,7 @@ export default function Regiment() {
                   {workout.type} - {workout.muscle}
                 </h2>
                 </div>
+                
 
                 <div id={`workout-modal-${index}`} tabIndex="-1" aria-hidden="false" className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                   <div className="relative p-4 w-full max-w-2xl max-h-full">
@@ -84,23 +124,22 @@ export default function Regiment() {
                             fontSize: '16px',
                             lineHeight: '1.5',
                           }}/>
-
-                        
                       </div>
-                      <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <button
-                          onClick={() => { handleFinish(index); document.getElementById(`workout-modal-${index}`).classList.add('hidden'); }}
-                          type="button"
-                          className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                          Finish
-                        </button>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>
               </div>
             ))}
+            <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                  <button
+                onClick={() => {handleSaveRegiment();}}
+                type="button"
+                className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Finish
+                </button>
+              </div>
 
             <div>
               <DragDrop onFileChange={handleFileChange}/>
@@ -113,6 +152,7 @@ export default function Regiment() {
                 <p><strong>File Type:</strong> {fileInfo.type}</p>
               </div>
             )}
+
           </>
         ) : (
           <div className="text-center">
