@@ -79,7 +79,14 @@ export default function Regiment() {
       const regimentResponse = await addCompletedRegiment({
         variables: {
           name: data?.Regiment?.name || 'Unnamed Regiment',
-          date: new Date().toISOString(),
+          date: new Date().toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          }),
           time: stopwatchTime || '0:00:00:00',
           progressPic: compressedImage || null,
         }
