@@ -3,22 +3,16 @@ import { useParams } from "react-router-dom";
 import { SIGN_OUT } from "../utils/mutations";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {GET_USER_BY_ID } from "../utils/queries"; // Import the ADD_SKILL mutation
-import DragDrop from '../components/DragDrop';
+import {GET_USER_BY_ID } from "../utils/queries";
+
 
 
 export default function Profile({ onLogout }) {
   const { userId } = useParams();
-  const navigate = useNavigate(); // Initialize useNavigate
-  const [fileInfo, setFileInfo] = useState(null);
+  const navigate = useNavigate();
   const { loading, error, data } = useQuery(GET_USER_BY_ID, {
     variables: { userId: userId },
   });
-
-
-  const handleFileChange = (info) => {
-    setFileInfo(info);
-  };
 
 
 
@@ -34,7 +28,7 @@ export default function Profile({ onLogout }) {
     },
   });
 
- 
+
 
   const [skills, setSkills] = useState("");
 
@@ -56,7 +50,6 @@ export default function Profile({ onLogout }) {
 
   return (
     <div className="pro">
-      {/* Remove or comment out any standalone img tags */}
       {data.oneUser.completedRegiments.map((regiment, index) => (
         <div key={index}>
           {regiment.progressPic && (

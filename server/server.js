@@ -36,7 +36,7 @@ const startApolloServer = async () => {
   await server.start();
 
   app.use(express.urlencoded({ limit: '50mb', extended: false }));
-  app.use(express.json());
+  app.use(express.json({ limit: '50mb' }));
 
   // Serve up static assets
   app.use('/images', express.static(path.join(__dirname, '../client/images')));

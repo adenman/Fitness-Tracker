@@ -10,7 +10,7 @@ function NavTabs() {
   const profile = isLoggedIn ? Auth.getProfile() : null;
   const picture = profile?.data?.pfp || '/defaultpfp.PNG';
   const name = profile?.data?.userName || 'Guest';
-  const id = profile.data._id;
+  const id = profile?.data?._id;
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
