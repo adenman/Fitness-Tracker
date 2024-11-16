@@ -7,6 +7,15 @@ function DragDrop({ onFileChange }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
 
+  const handleFileUpload = (uploadedFile) => {
+    setFile(uploadedFile);
+    
+    // Optional: File validation
+    if (uploadedFile) {
+      onFileChange(uploadedFile); // Pass file back to parent component
+    }
+  };
+
  const handleChange = (file) => {
   const selectedFile = Array.isArray(file) ? file[0] : file;
   setFile(selectedFile);
@@ -32,19 +41,14 @@ function DragDrop({ onFileChange }) {
 };
 
   return (
-    <div className="drag-drop-container">
-      <FileUploader
-        handleChange={handleChange}
-        name="file"
-        types={fileTypes}
-        label="Drag & drop your image files here or click to select"
-        uploadedLabel="Image uploaded successfully!"
-        hoverTitle="Drop your image here"
-        classes="custom-drop-area"
+    <div>
+      {/* File upload logic */}
+      <input 
+        type="file" 
+        onChange={(e) => handleFileUpload(e.target.files[0])}
+        accept="image/*" 
       />
-      {preview && (
-        <img src={preview} alt="Uploaded Preview" style={{ width: "300px", marginTop: "10px" }} />
-      )}
+      <button >Cancel</button>
     </div>
   );
 }

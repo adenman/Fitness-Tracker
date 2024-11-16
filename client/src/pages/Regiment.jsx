@@ -109,6 +109,12 @@ export default function Regiment() {
       ...prev,
       [index]: true,
     }));
+    
+    // Close the modal programmatically
+    const modal = document.getElementById(`workout-modal-${index}`);
+    if (modal) {
+      modal.classList.add('hidden');
+    }
   };
 
 
@@ -174,7 +180,7 @@ export default function Regiment() {
                           }}/>
 
                         <button
-                        onClick={() => {handleFinish();}}
+                        onClick={() => {handleFinish(index);}}
                         type="button"
                         className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
@@ -187,27 +193,27 @@ export default function Regiment() {
                 </div>
               </div>
             ))}
-            <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+           
+
+            <div>
+              <DragDrop onFileChange={handleFileChange}/>
+            </div>
+{fileInfo && (
+              <div className="file-info-display flex justify-center" style={{ marginTop: "10px" }}>
+                <p><strong>File Name:</strong> {fileInfo.name}</p>
+              </div>
+            )}
+             <div className="flex justify-center items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                   <button
                 onClick={() => {handleSaveRegiment();}}
                 type="button"
-                className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-black test  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Finish
                 </button>
               </div>
 
-            <div>
-              <DragDrop onFileChange={handleFileChange}/>
-            </div>
-
-            {fileInfo && (
-              <div className="file-info-display" style={{ marginTop: "10px" }}>
-                <p><strong>File Name:</strong> {fileInfo.name}</p>
-                <p><strong>File Size:</strong> {fileInfo.size} KB</p>
-                <p><strong>File Type:</strong> {fileInfo.type}</p>
-              </div>
-            )}
+            
 
           </>
         ) : (

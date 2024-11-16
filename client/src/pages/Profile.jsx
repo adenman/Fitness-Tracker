@@ -18,8 +18,20 @@ export default function Profile({ onLogout }) {
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(data?.oneUser?.userName || '');
   const [newPassword, setNewPassword] = useState(null);
+  const [newPfp, setNewPfp] = useState(null);
+  const [showDragDrop, setShowDragDrop] = useState(false);
+  const [fileInfo, setFileInfo] = useState(null);
   
-  const [updateUser] = useMutation(UPDATE_USER);
+  const [updateUser] = useMutation(UPDATE_USER, {
+    onCompleted: (data) => {
+      // Update the local state with the new profile picture
+      setNewPfp(data)
+      setShowDragDrop(false);
+    },
+    onError: (error) => {
+      console.error("Error updating profile picture:", error);
+    }
+  });
 
   const [signOut] = useMutation(SIGN_OUT, {
     onCompleted: () => {      
@@ -39,6 +51,28 @@ export default function Profile({ onLogout }) {
   };
   const handleEditClick = () => {
     setIsEditing(true);
+  };
+
+  
+  const handleFileChange = (file) => {
+    // Assuming file is the uploaded image
+    try {
+      const profile = Auth.getProfile();
+      const userId = profile.data._id;
+
+      updateUser({
+        variables: {
+          userId: userId,
+          pfp: file // Pass the uploaded file 
+        }
+      });
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+    }
+  };
+
+  const handleNewPfp = (info) => {
+    return setNewPfp(info);
   };
 
 
@@ -67,7 +101,7 @@ export default function Profile({ onLogout }) {
           userId: userId,
           userName: newName,
           password: newPassword, // Lowercase 'p'
-          pfp: newPfp
+          pfp: newPfp 
         }
       });
   
@@ -89,19 +123,45 @@ export default function Profile({ onLogout }) {
       {/* pfp and userName */}
       <h1 className="flex justify-center mb-8">Hello {data.oneUser.userName}</h1>
       <div className="flex justify-center">
-        <button>
-        <div className="profilepic">
-          <img className="profilepic__image" src={data.oneUser.pfp} />
-          <div className="profilepic__content">
-            
-            <span className="profilepic__text">Edit Profile</span>
+      
+      <button onClick={() => setShowDragDrop(true)}>
+          <div className="profilepic">
+            {/* Use newPfp if available, otherwise use existing profile picture */}
+            <img 
+              className="profilepic__image" 
+              src={newPfp || data.oneUser.pfp} 
+              alt="Profile" 
+            />
+            <div className="profilepic__content">
+              <span className="profilepic__text">Edit Profile Picture</span>
+            </div>
           </div>
-        </div>
         </button>
+        
       </div>
 
       <div>
       {isEditing ? (
+        <div>
+          {/* DragDrop component with onCancel */}
+          {showDragDrop && (
+  <DragDrop
+    onFileChange={(file) => {
+      // Create a URL for the file to preview
+      const fileUrl = URL.createObjectURL(file);
+      
+      // Set the file URL for preview
+      setNewPfp(fileUrl);
+      
+      // Pass the actual file for upload
+      handleFileChange(file);
+    }}
+    onCancel={() => {
+      setShowDragDrop(false);
+      setFileInfo(null);
+    }}
+  />
+)}
         <form className='text-black' onSubmit={handleSaveEdit}>
         <input 
           type="text" 
@@ -119,12 +179,15 @@ export default function Profile({ onLogout }) {
         />
         <button type="submit">Update Profile</button>
       </form>
-      
+      </div>
           ) : (
             <div className="flex items-center gap-4 justify-center">
             <button 
               className='text-xl px-2 py-1 border-2 rounded-lg font-medium' 
-              onClick={handleEditClick}
+              onClick={() => {
+                handleEditClick();
+                setShowDragDrop(true);
+              }}
             >
               Change Username/Password
             </button>
