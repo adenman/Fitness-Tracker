@@ -56,7 +56,7 @@ const resolvers = {
       return { token, user };
     },
 
-    updateUser: async (parent, { userId, userName, password }) => {
+    updateUser: async (parent, { userId, userName, password, pfp }) => {
       try {
         // If password is provided, hash it before updating
         let hashedPassword;
@@ -70,7 +70,8 @@ const resolvers = {
           { 
             $set: { 
               ...(userName && { userName: userName }),
-              ...(hashedPassword && { password: hashedPassword }) 
+              ...(hashedPassword && { password: hashedPassword }),
+              ...(pfp && { pfp: pfp })
             } 
           },
           { 

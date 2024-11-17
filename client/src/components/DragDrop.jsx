@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
 
 const fileTypes = ["JPG", "PNG", "GIF", "SVG", "BMP", "TIFF", "WEBP"];
 
-function DragDrop({ onFileChange }) {
+function DragDrop({ onFileChange, showPreview  }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
+
+  const handleBothFunctions = (e) => {
+    handleFileUpload(e.target.files[0]);
+    handleChange(e.target.files[0]);
+  };
+
 
   const handleFileUpload = (uploadedFile) => {
     setFile(uploadedFile);
     
-    // Optional: File validation
+
     if (uploadedFile) {
       onFileChange(uploadedFile); // Pass file back to parent component
     }
@@ -40,17 +45,22 @@ function DragDrop({ onFileChange }) {
   reader.readAsDataURL(selectedFile);
 };
 
-  return (
-    <div>
-      {/* File upload logic */}
-      <input 
-        type="file" 
-        onChange={(e) => handleFileUpload(e.target.files[0])}
-        accept="image/*" 
-      />
-      <button >Cancel</button>
-    </div>
-  );
+return (
+  <div>
+    <input 
+      type="file" 
+      onChange={handleBothFunctions}
+      accept="image/*" 
+    />
+    <button>Cancel</button>
+    {/* Only show preview if showPreview prop is true */}
+    {showPreview && file && (
+      <div>
+        <img src={preview} alt="Preview" />
+      </div>
+    )}
+  </div>
+);
 }
 
 export default DragDrop;

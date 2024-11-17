@@ -196,7 +196,7 @@ export default function Regiment() {
            
 
             <div>
-              <DragDrop onFileChange={handleFileChange}/>
+              <DragDrop onFileChange={handleFileChange} showPreview={true}/>
             </div>
 {fileInfo && (
               <div className="file-info-display flex justify-center" style={{ marginTop: "10px" }}>

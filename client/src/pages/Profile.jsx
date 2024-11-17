@@ -22,16 +22,8 @@ export default function Profile({ onLogout }) {
   const [showDragDrop, setShowDragDrop] = useState(false);
   const [fileInfo, setFileInfo] = useState(null);
   
-  const [updateUser] = useMutation(UPDATE_USER, {
-    onCompleted: (data) => {
-      // Update the local state with the new profile picture
-      setNewPfp(data)
-      setShowDragDrop(false);
-    },
-    onError: (error) => {
-      console.error("Error updating profile picture:", error);
-    }
-  });
+  const [updateUser] = useMutation(UPDATE_USER);
+    
 
   const [signOut] = useMutation(SIGN_OUT, {
     onCompleted: () => {      
@@ -54,12 +46,54 @@ export default function Profile({ onLogout }) {
   };
 
   
-  const handleFileChange = (file) => {
+  const handleFileChange = async (file) => {
     // Assuming file is the uploaded image
     try {
       const profile = Auth.getProfile();
       const userId = profile.data._id;
 
+
+
+      const compressImage = async (base64Str, maxWidth = 800, maxHeight = 800) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = base64Str;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+  
+            // Calculate new dimensions
+            if (width > height) {
+              if (width > maxWidth) {
+                height *= maxWidth / width;
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width *= maxHeight / height;
+                height = maxHeight;
+              }
+            }
+  
+            canvas.width = width;
+            canvas.height = height;
+  
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+  
+            resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality
+          };
+        });
+      };
+  
+      // Compress the image if it exists
+      const compressedImage = fileInfo 
+        ? await compressImage(fileInfo.base64) 
+        : null;
+        
+
+      
       updateUser({
         variables: {
           userId: userId,
@@ -71,9 +105,7 @@ export default function Profile({ onLogout }) {
     }
   };
 
-  const handleNewPfp = (info) => {
-    return setNewPfp(info);
-  };
+  
 
 
 
@@ -142,10 +174,12 @@ export default function Profile({ onLogout }) {
 
       <div>
       {isEditing ? (
-        <div>
+        <div >
           {/* DragDrop component with onCancel */}
+          <div className="flex justify-center">
           {showDragDrop && (
   <DragDrop
+  showPreview={false}
     onFileChange={(file) => {
       // Create a URL for the file to preview
       const fileUrl = URL.createObjectURL(file);
@@ -161,7 +195,11 @@ export default function Profile({ onLogout }) {
       setFileInfo(null);
     }}
   />
-)}
+)}  
+ </div>  
+
+
+ <div className="flex justify-center mt-10 border-2 p-4 w-1/2 test">
         <form className='text-black' onSubmit={handleSaveEdit}>
         <input 
           type="text" 
@@ -177,8 +215,9 @@ export default function Profile({ onLogout }) {
           onChange={(e) => setNewPassword(e.target.value)} 
           onKeyPress={handleKeyPress}
         />
-        <button type="submit">Update Profile</button>
+        <button className="t" type="submit">Update Profile</button>
       </form>
+      </div>
       </div>
           ) : (
             <div className="flex items-center gap-4 justify-center">
@@ -189,7 +228,7 @@ export default function Profile({ onLogout }) {
                 setShowDragDrop(true);
               }}
             >
-              Change Username/Password
+              Change Username/Password/PFP
             </button>
           </div>
           )}
@@ -197,7 +236,7 @@ export default function Profile({ onLogout }) {
           
       </div>
 
-      <div className="pro">
+      {/* <div className="pro">
         {data.oneUser.completedRegiments.map((regiment, index) => (
           <div key={index}>
             {regiment.progressPic && (
@@ -209,7 +248,7 @@ export default function Profile({ onLogout }) {
             )}
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
