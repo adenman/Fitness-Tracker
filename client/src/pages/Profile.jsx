@@ -309,23 +309,48 @@ export default function Profile({ onLogout }) {
         
       </div>
       <div className="flex justify-center mt-10">
-        <button onClick={()=> navigate(`/Log`)} className="py-6 px-24 mt-6 test border-2 accentb">Log</button>
+        <button onClick={()=> navigate(`/Log/${userId}`)} className="py-6 px-24 mt-6  test border-2 accentb">Calendar/Log</button>
       </div>
 
       <div>
-        <h1 className="flex justify-center mt-4">Your Progress</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-5 mt-6 p-2 border-2 accentb darkbg">
-  {data.oneUser.completedRegiments.map((regiment, index) => (
-    <div className="flex justify-center" key={index}>
-      {regiment.progressPic && (
-        <img
-          src={regiment.progressPic}
-          alt={`Progress pic for ${regiment.name}`}
-          className="w-full max-w-[300px] h-auto object-cover rounded-lg"
-        />
-      )}
+      <div className="px-2 sm:px-4">
+  <h1 className="text-xl sm:text-2xl font-bold text-center mt-6 mb-4 t">Your Fitness Journey</h1>
+  <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+    {data.oneUser.completedRegiments.map((regiment, index) => (
+      <div 
+        key={index} 
+        className="bg-white shadow-md rounded-lg overflow-hidden 
+        transition duration-300 ease-in-out 
+        transform active:scale-95 
+        hover:shadow-lg"
+      >
+        {regiment.progressPic && (
+          <div className="relative aspect-square">
+            <img
+              src={regiment.progressPic}
+              alt={`Progress pic for ${regiment.name}`}
+              className="w-full h-full object-cover"
+            />
+            
+          </div>
+        )}
+        <div className="p-2 sm:p-3 test">
+        <p className="text-xs sm:text-sm font-semibold truncate t">
+                {regiment.name}
+              </p>
+          <p className="text-xs sm:text-sm t break-words whitespace-normal">
+            Completed: {regiment.date}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+  {data.oneUser.completedRegiments.length === 0 && (
+    <div className="text-center text-gray-500 mt-6 px-4">
+      <p className="text-sm">No completed regiments yet.</p>
+      <p className="text-xs mt-2">Start your fitness journey today!</p>
     </div>
-  ))}
+  )}
 </div>
       </div>
     </div>

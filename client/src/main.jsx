@@ -12,6 +12,7 @@ import SignUp from "./pages/signup";
 import Profile from "./pages/Profile";
 import NewWorkout from "./pages/newWorkout";
 import Regiment from "./pages/Regiment";
+import Log from "./pages/Log";
 
 
 
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/profile/:userId",
         element: <Profile />,
+      },
+      {
+        path: "/Log/:userId",
+        element: <Log />,
       },
     ],
   },

@@ -1,36 +1,89 @@
+import React, { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import events from '../utils/events';
+import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin
+import { parseISO, format } from 'date-fns';
 import { Typography } from '@mui/material';
-
-function renderEventContent(eventInfo) {
-  return (
-    <div style={{ overflow: 'hidden' }}>
-      <Typography>
-        <Typography>{eventInfo.timeText}</Typography>
-        <Typography>{eventInfo.event?._def?.title}</Typography>
-        <Typography>{eventInfo.event?._def?.extendedProps.description}</Typography>
-      </Typography>
-    </div>
-  );
-}
+import { useParams } from "react-router-dom";
+import { GET_USER_BY_ID } from "../utils/queries";
+import { useQuery } from "@apollo/client";
 
 function Cal() {
+  const { userId } = useParams();
+  const { loading, data } = useQuery(GET_USER_BY_ID, {
+    variables: { userId: userId },
+  });
+
+  const [calendarEvents, setCalendarEvents] = useState([]);
+
+  useEffect(() => {
+    // Function to convert custom date format to ISO string
+    const convertToISODate = (dateString) => {
+      try {
+        // Parse the date string
+        const parsedDate = new Date(dateString);
+        
+        // Convert to ISO string
+        return parsedDate.toISOString();
+      } catch (error) {
+        console.error('Date parsing error:', error);
+        return null;
+      }
+    };
+
+    // If you're getting dates from completed regiments
+    if (data?.oneUser?.completedRegiments) {
+      const userEvents = data.oneUser.completedRegiments.map(regiment => ({
+        title: regiment.name,
+        start: convertToISODate(regiment.date), // Convert date here
+        allDay: false // Set to false if you want to show specific time
+      })).filter(event => event.start !== null); // Remove events with invalid dates
+
+      setCalendarEvents(userEvents);
+    }
+  }, [data]);
+
+  function renderEventContent(eventInfo) {
+    return (
+      <div style={{ 
+        pointerEvents: 'none',
+        overflow: 'hidden', 
+        backgroundColor: 'blue', 
+        color: 'white', 
+        padding: '2px' 
+      }}>
+        <Typography variant="body2"  component="span"  style={{ 
+          textDecoration: 'none',
+          color: 'inherit'
+        }}>
+          {eventInfo.event.title}
+        </Typography>
+      </div>
+    );
+  }
+
+  // Debug logging
+  
+
   return (
     <div className="App">
-      <h1 className="App-header text-center t">Your progress</h1>
       <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
         headerToolbar={{
-          start: 'title', // Will show us the calendar's month & year on the start
-          end: 'today prev,next' // Will give us the option of the buttons on the right to navigate
+          left: 'prev,next today',
+          center: 'title',
+          right: '' // You can add custom views here
         }}
-        plugins={[dayGridPlugin]} // Calendar View type
-        events={events}
-        eventContent={renderEventContent} 
+        events={calendarEvents}
+        eventContent={renderEventContent}
+        height="auto"
+        contentHeight="auto"
+        aspectRatio={1.35}
+        displayEventTime={true}
       />
     </div>
   );
 }
-
 
 export default Cal;
