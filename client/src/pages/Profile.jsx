@@ -15,7 +15,9 @@ export default function Profile({ onLogout }) {
     variables: { userId: userId },
   });
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingPfp, setIsEditingPfp] = useState(false);
   const [newName, setNewName] = useState(data?.oneUser?.userName || '');
   const [newPassword, setNewPassword] = useState(null);
   const [newPfp, setNewPfp] = useState(null);
@@ -41,20 +43,26 @@ export default function Profile({ onLogout }) {
       setIsEditing(false);
     }
   };
-  const handleEditClick = () => {
-    setIsEditing(true);
+  const handleEditPfpClick = () => {
+    setIsEditingPfp(true);
+  };
+
+  const handleEditPasswordClick = () => {
+    setIsEditingPassword(true);
+  };
+  
+  const handleEditNameClick = () => {
+    setIsEditingName(true);
   };
 
   
   const handleFileChange = async (file) => {
-    // Assuming file is the uploaded image
     try {
       const profile = Auth.getProfile();
       const userId = profile.data._id;
-
-
-
-      const compressImage = async (base64Str, maxWidth = 800, maxHeight = 800) => {
+  
+      // Compress and optimize image
+      const optimizeImage = async (base64Str, maxWidth = 800, maxHeight = 800) => {
         return new Promise((resolve) => {
           const img = new Image();
           img.src = base64Str;
@@ -63,7 +71,7 @@ export default function Profile({ onLogout }) {
             let width = img.width;
             let height = img.height;
   
-            // Calculate new dimensions
+            // Resize logic
             if (width > height) {
               if (width > maxWidth) {
                 height *= maxWidth / width;
@@ -82,24 +90,24 @@ export default function Profile({ onLogout }) {
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
   
-            resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality
+            // Use lower quality and smaller size
+            const optimizedBase64 = canvas.toDataURL('image/webp', 0.5);
+            resolve(optimizedBase64);
           };
         });
       };
   
-      // Compress the image if it exists
-      const compressedImage = fileInfo 
-        ? await compressImage(fileInfo.base64) 
+      const optimizedImage = file.base64 
+        ? await optimizeImage(file.base64) 
         : null;
-        
-
-      
+  
       updateUser({
         variables: {
           userId: userId,
-          pfp: file // Pass the uploaded file 
+          pfp: optimizedImage // Optimized, compressed image
         }
       });
+      setIsEditingPfp(false);
     } catch (error) {
       console.error("Error updating profile picture:", error);
     }
@@ -132,13 +140,14 @@ export default function Profile({ onLogout }) {
         variables: {
           userId: userId,
           userName: newName,
-          password: newPassword, // Lowercase 'p'
-          pfp: newPfp 
+          password: newPassword, 
+          
         }
       });
   
       // Optional: Add success feedback or navigation
-      setIsEditing(false);
+      setIsEditingPassword(false);
+      setIsEditingName(false);
     } catch (err) {
       console.error("Error updating profile:", err.message);
     }
@@ -153,10 +162,12 @@ export default function Profile({ onLogout }) {
   return (
     <div>
       {/* pfp and userName */}
-      <h1 className="flex justify-center mb-8">Hello {data.oneUser.userName}</h1>
+      <h1 className="flex justify-center mb-8">Hello {data.oneUser.userName}!</h1>
       <div className="flex justify-center">
-      
-      <button onClick={() => setShowDragDrop(true)}>
+      <button onClick={() => {
+        handleEditPfpClick();
+        setShowDragDrop(true);
+      }}>
           <div className="profilepic">
             {/* Use newPfp if available, otherwise use existing profile picture */}
             <img 
@@ -168,87 +179,155 @@ export default function Profile({ onLogout }) {
               <span className="profilepic__text">Edit Profile Picture</span>
             </div>
           </div>
-        </button>
+        </button> 
+      </div>
+      <div className="flex justify-center">
+        
+      {isEditingPfp ? (
+        <div className="flex justify-center">
+          {showDragDrop && (
+      <DragDrop
+        showPreview={false}
+        onFileChange={(fileInfo) => {
+          if (fileInfo && fileInfo.base64) {
+            setNewPfp(fileInfo.base64);
+            handleFileChange(fileInfo);
+          }
+        }}
+        onCancel={() => {
+          setShowDragDrop(false);
+          setIsEditingPfp(false);
+          setNewPfp(null);
+          setFileInfo(null);
+        }}
+      />
+    )}
+ </div>
+
+
+      
+      ) : (
+      <div></div>
+      )}
+        
         
       </div>
 
-      <div>
-      {isEditing ? (
-        <div >
-          {/* DragDrop component with onCancel */}
-          <div className="flex justify-center">
-          {showDragDrop && (
-  <DragDrop
-  showPreview={false}
-    onFileChange={(file) => {
-      // Create a URL for the file to preview
-      const fileUrl = URL.createObjectURL(file);
       
-      // Set the file URL for preview
-      setNewPfp(fileUrl);
-      
-      // Pass the actual file for upload
-      handleFileChange(file);
-    }}
-    onCancel={() => {
-      setShowDragDrop(false);
-      setFileInfo(null);
-    }}
-  />
-)}  
- </div>  
 
-
- <div className="flex justify-center mt-10 border-2 p-4 w-1/2 test">
-        <form className='text-black' onSubmit={handleSaveEdit}>
+      <div className="border-3 accent mt-6">
+      {isEditingName ? (
+  <div className="w-full px-4 mt-6">
+    <form 
+      className="bg-white shadow-md rounded-lg p-4 max-w-md mx-auto" 
+      onSubmit={handleSaveEdit}
+    >
+      <div className="mb-4">
         <input 
           type="text" 
+          className="w-full px-3 py-2 text-black border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="New Username" 
-          value={newName} 
+          value={data.oneUser.userName} 
           onChange={(e) => setNewName(e.target.value)} 
           onKeyPress={handleKeyPress}
         />
+      </div>
+      <div className="flex justify-between space-x-2">
+        <button 
+          type="submit" 
+          className="flex-1 bg-blue-500 text-black py-2 rounded-md hover:bg-blue-600 transition"
+        >
+          Update
+        </button>
+        <button 
+          type="button"
+          className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition"
+          onClick={() => {setIsEditingName(false)}}
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+) : (
+  <div className="flex justify-between items-center px-4 py-3 test shadow-sm">
+    <span className="text-lg">Username: {data.oneUser.userName}</span>
+    <button 
+      onClick={handleEditNameClick} 
+      className="accent text-black px-3 py-1 rounded-md text-sm"
+    >
+      Edit
+    </button>
+  </div>
+)}
+
+{isEditingPassword ? (
+  <div className="w-full px-4 mt-6">
+    <form 
+      className="bg-white shadow-md rounded-lg p-4 max-w-md mx-auto" 
+      onSubmit={handleSaveEdit}
+    >
+      <div className="mb-4">
         <input 
           type="password" 
+          className="w-full px-3 py-2 text-black border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="New Password" 
           value={newPassword} 
           onChange={(e) => setNewPassword(e.target.value)} 
           onKeyPress={handleKeyPress}
         />
-        <button className="t" type="submit">Update Profile</button>
-      </form>
       </div>
+      <div className="flex justify-between space-x-2">
+        <button 
+          type="submit" 
+          className="flex-1 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+        >
+          Update
+        </button>
+        <button 
+          type="button"
+          className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition"
+          onClick={() => {setIsEditingPassword(false)}}
+        >
+          Cancel
+        </button>
       </div>
-          ) : (
-            <div className="flex items-center gap-4 justify-center">
-            <button 
-              className='text-xl px-2 py-1 border-2 rounded-lg font-medium' 
-              onClick={() => {
-                handleEditClick();
-                setShowDragDrop(true);
-              }}
-            >
-              Change Username/Password/PFP
-            </button>
-          </div>
-          )}
-          
-          
+    </form>
+  </div>
+) : (
+  <div className="flex justify-between items-center px-4 py-3 test shadow-sm">
+    <span className="text-lg">Password: ********</span>
+    <button 
+      onClick={handleEditPasswordClick} 
+      className="accent text-black px-3 py-1 rounded-md text-sm"
+    >
+      Edit
+    </button>
+  </div>
+)}
+        
+        
+      </div>
+      <div className="flex justify-center mt-10">
+        <button onClick={()=> navigate(`/Log`)} className="py-6 px-24 mt-6 test border-2 accentb">Log</button>
       </div>
 
-      {/* <div className="pro">
-        {data.oneUser.completedRegiments.map((regiment, index) => (
-          <div key={index}>
-            {regiment.progressPic && (
-              <img 
-                src={regiment.progressPic} 
-                alt={`Progress pic for ${regiment.name}`} 
-                style={{ maxWidth: '300px', maxHeight: '300px' }} 
-              />
-            )}
-          </div>
-        ))}
-      </div> */}
+      <div>
+        <h1 className="flex justify-center mt-4">Your Progress</h1>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-5 mt-6 p-2 border-2 accentb darkbg">
+  {data.oneUser.completedRegiments.map((regiment, index) => (
+    <div className="flex justify-center" key={index}>
+      {regiment.progressPic && (
+        <img
+          src={regiment.progressPic}
+          alt={`Progress pic for ${regiment.name}`}
+          className="w-full max-w-[300px] h-auto object-cover rounded-lg"
+        />
+      )}
+    </div>
+  ))}
+</div>
+      </div>
     </div>
   );
 }

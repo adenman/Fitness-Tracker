@@ -51,7 +51,19 @@ html{
 
 
 .test{
-  background-color: #F7A072;
+  background-color: #445b5f;
+}
+
+.darkbg{
+  background-color: #303f42;
+}
+
+.accent{
+  background-color: #d0e4bd;
+  border-color: #d0e4bd;
+}
+.accentb{
+  border-color: #d0e4bd;
 }
 
 .test2{
