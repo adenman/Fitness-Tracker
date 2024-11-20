@@ -3,9 +3,11 @@ import { useMutation } from '@apollo/client';
 import { useWorkout } from './../components/context';
 import {ADD_REGIMENT_TO_USER, ADD_REGIMENT} from '../utils/mutations'
 import Auth from '../utils/auth'
+import { useNavigate } from 'react-router-dom';
 
 const NewRegiment = () => {
     const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate();
     const [workoutName, setWorkoutName] = useState('New Workout');
     const { selectedExercise } = useWorkout();
     const [selectedWorkouts, setSelectedWorkouts] = useState(() => {
@@ -83,6 +85,7 @@ const NewRegiment = () => {
           });
           setSelectedWorkouts([]);
         }
+
       } catch (err) {
         console.error("Error details:", err.message);
       }
@@ -130,7 +133,7 @@ const NewRegiment = () => {
     )}
           
           {selectedWorkouts ? selectedWorkouts.map((workout, index) => (
-            <div key={index} className="workout-card border-2 blue-b r rounded t p-4 my-2 mx-2">
+            <div key={index} className="workout-card border-2 accentb blue-back rounded accentT p-4 my-2 mx-2">
               <div className="flex justify-between items-center w-full">
                 <div>
                   <h2 className="text-xl font-bold">{workout.name}</h2>
@@ -157,7 +160,7 @@ const NewRegiment = () => {
     className='bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded' 
     onClick={() => {
       handleSaveWorkout();
-      
+      window.location.href = '/';
     }}
   >
     Save Workout

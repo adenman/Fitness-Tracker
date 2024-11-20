@@ -62,10 +62,16 @@ html{
 
 .accent{
   background-color: #d0e4bd;
-  border-color: #d0e4bd;
 }
 .accentb{
   border-color: #d0e4bd;
+}
+.accentT{
+  color: #d0e4bd;
+}
+
+.blue-back{
+  background-color: #55868C;
 }
 
 .test2{

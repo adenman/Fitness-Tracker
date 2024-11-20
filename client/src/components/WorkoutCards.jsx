@@ -55,13 +55,14 @@ function WorkoutCards() {
         <input
           type="text"
           placeholder="Search exercises..."
-          className="p-2 bg-black t blue-b border-2 rounded w-64"
+          className="p-2 blue-back  accentb border-2 rounded w-64 placeholder-white"
+          
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div className="flex gap-4">
           <select 
-            className="p-2 bg-black t blue-b border-2 rounded"
+            className="p-2 blue-back t accentb border-2 rounded"
             value={muscle} 
             onChange={(e) => setMuscle(e.target.value)}
           >
@@ -74,7 +75,7 @@ function WorkoutCards() {
           </select>
 
           <select 
-            className="p-2 bg-black t blue-b border-2 rounded"
+            className="p-2 blue-back t accentb border-2 rounded"
             value={difficulty} 
             onChange={(e) => setDifficulty(e.target.value)}
           >
@@ -90,10 +91,17 @@ function WorkoutCards() {
         
       </div>
 
-      <div className="grid gap-6 md:w-3/4 lg:w-1/2 mx-auto t">
+      <div className="grid gap-6 md:w-3/4 lg:w-1/2 mx-auto t  ">
         {filteredExercises.map((exercise, index) => (
-          <Card key={index} className="border-4 blue-b bg-black t">
-            <div className="flex flex-col">
+          <Card 
+          key={index} 
+          className="border-4 accentb t blue-back"
+          style={{ 
+            backgroundColor: '#445b5f',  // Light gray background
+
+          }}
+        >
+            <div className="flex flex-col rounded blue-back">
               <h5 className="text-2xl font-medium text-center mb-4">
                 {exercise.name}
               </h5>
@@ -116,7 +124,7 @@ function WorkoutCards() {
                   </p>
                 </div>
               </div>
-              <button className="text-2xl back text-black" 
+              <button className="text-2xl accent text-black" 
               onClick={() => handleAddWorkout(exercise)}>+</button>
             </div>
           </Card>

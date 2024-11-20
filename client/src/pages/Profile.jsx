@@ -280,7 +280,7 @@ export default function Profile({ onLogout }) {
       <div className="flex justify-between space-x-2">
         <button 
           type="submit" 
-          className="flex-1 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+          className="flex-1 bg-blue-500 text-white py-2 rounded-md  transition"
         >
           Update
         </button>
@@ -316,41 +316,41 @@ export default function Profile({ onLogout }) {
       <div className="px-2 sm:px-4">
   <h1 className="text-xl sm:text-2xl font-bold text-center mt-6 mb-4 t">Your Fitness Journey</h1>
   <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
-    {data.oneUser.completedRegiments.map((regiment, index) => (
-      <div 
-        key={index} 
-        className="bg-white shadow-md rounded-lg overflow-hidden 
-        transition duration-300 ease-in-out 
-        transform active:scale-95 
-        hover:shadow-lg"
-      >
-        {regiment.progressPic && (
-          <div className="relative aspect-square">
-            <img
-              src={regiment.progressPic}
-              alt={`Progress pic for ${regiment.name}`}
-              className="w-full h-full object-cover"
-            />
-            
-          </div>
-        )}
-        <div className="p-2 sm:p-3 test">
-        <p className="text-xs sm:text-sm font-semibold truncate t">
+    {data.oneUser.completedRegiments.filter(regiment => regiment.progressPic).length > 0 ? (
+      data.oneUser.completedRegiments
+        .filter(regiment => regiment.progressPic)
+        .map((regiment, index) => (
+          <div 
+            key={index} 
+            className="bg-white shadow-md rounded-lg overflow-hidden 
+            transition duration-300 ease-in-out 
+            transform active:scale-95 
+            hover:shadow-lg"
+          >
+            <div className="relative aspect-square">
+              <img
+                src={regiment.progressPic}
+                alt={`Progress pic for ${regiment.name}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-2 sm:p-3 test">
+              <p className="text-xs sm:text-sm font-semibold truncate t">
                 {regiment.name}
               </p>
-          <p className="text-xs sm:text-sm t break-words whitespace-normal">
-            Completed: {regiment.date}
-          </p>
-        </div>
+              <p className="text-xs sm:text-sm t break-words whitespace-normal">
+                {regiment.date}
+              </p>
+            </div>
+          </div>
+        ))
+    ) : (
+      <div className="text-center text-gray-500 mt-6 px-4 col-span-full">
+        <p className="text-sm">No progress pictures uploaded yet.</p>
+        <p className="text-xs mt-2">Complete a regiment and upload a progress pic!</p>
       </div>
-    ))}
+    )}
   </div>
-  {data.oneUser.completedRegiments.length === 0 && (
-    <div className="text-center text-gray-500 mt-6 px-4">
-      <p className="text-sm">No completed regiments yet.</p>
-      <p className="text-xs mt-2">Start your fitness journey today!</p>
-    </div>
-  )}
 </div>
       </div>
     </div>

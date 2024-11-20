@@ -8,9 +8,11 @@ import Stopwatch from '../components/Stopwatch';
 import DragDrop from '../components/DragDrop';
 import { useState } from 'react';
 import Auth from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 export default function Regiment() {
   const { regimentId } = useParams();
+  const navigate = useNavigate();
   const [stopwatchTime, setstopwatchTime] = useState();
   const [finishedWorkouts, setFinishedWorkouts] = useState({});
   const [fileInfo, setFileInfo] = useState(null);
@@ -182,7 +184,7 @@ export default function Regiment() {
                         <button
                         onClick={() => {handleFinish(index);}}
                         type="button"
-                        className="text-black test hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        className="text-black accent  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                         >
                           Finish
                         </button>
@@ -195,8 +197,8 @@ export default function Regiment() {
             ))}
            
 
-            <div>
-              <DragDrop onFileChange={handleFileChange} showPreview={true}/>
+            <div className="flex justify-center">
+              <DragDrop className="mx-2"  onFileChange={handleFileChange} showPreview={true}/>
             </div>
 {fileInfo && (
               <div className="file-info-display flex justify-center" style={{ marginTop: "10px" }}>
@@ -205,9 +207,9 @@ export default function Regiment() {
             )}
              <div className="flex justify-center items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                   <button
-                onClick={() => {handleSaveRegiment();}}
+                onClick={() => {handleSaveRegiment(); navigate('/');}}
                 type="button"
-                className="text-black test  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-black accent  font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 >
                   Finish
                 </button>

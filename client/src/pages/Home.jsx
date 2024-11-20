@@ -92,13 +92,13 @@ export default function Home() {
     return (
       <>
       <div>
-        <h3 className='t rounded'>Workouts</h3>
-        <ul className="list-group rounded">
-          <li className="list-group-item text-center">
-            <button onClick={() => navigate('/LogIn')}>LogIn to view workouts</button>
-          </li>
-        </ul>
-        
+        <div className='flex justify-center'>
+        <img  src="/MuscleMakerLogo.png" alt="" />
+        </div>
+        <h3 className='t flex justify-center'>Login or Sign Up to Start Working out</h3>
+        <div className='flex justify-center'>
+            <button className='px-3 py-3 rounded test border-2 accentb' onClick={() => navigate('/LogIn')}>Log In </button>
+        </div>
         </div>
       </>
     );

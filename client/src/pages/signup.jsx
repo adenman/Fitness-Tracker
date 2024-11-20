@@ -44,7 +44,7 @@ export default function SignUp() {
                   <p className="text-white-50 mb-5">Create your account!</p>
 
                   <form onSubmit={handleSubmit}>
-                    <div data-mdb-input-init className="form-outline form-white mb-4">
+                    <div data-mdb-input-init className="form-outline form-white mb-4 text-black">
                       <input 
                         type="text" 
                         id="typeEmailX" 
@@ -74,14 +74,14 @@ export default function SignUp() {
                       </div>
                     )}
 
-                    <button data-mdb-button-init data-mdb-ripple-init className="btn btn-outline-light btn-lg px-5" type="submit">
+                    <button  className="border-1 rounded btn-outline-light btn-lg px-5 py-2 test accentb" type="submit">
                       Sign Up
                     </button>
                   </form>
                 </div>
 
                 <div>
-                  <p className="mb-0">Already have an account? <a href="/LogIn" className="text-white-50 fw-bold">Sign In</a></p>
+                  <p className="mb-0">Already have an account? <a href="/LogIn" className="accentT fw-bold ">LogIn</a></p>
                 </div>
               </div>
             </div>
