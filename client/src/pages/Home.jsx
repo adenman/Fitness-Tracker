@@ -5,37 +5,7 @@ import Auth from "./../utils/auth";
 import {GET_REGIMENTS} from '../utils/queries'
 import {GET_USER_BY_ID } from "../utils/queries";
 
-const calculateStreak = (completedRegiments) => {
-  if (!completedRegiments || completedRegiments.length === 0) return 0;
 
-  // Sort completed regiments by date in descending order
-  const sortedRegiments = [...completedRegiments]
-    .filter(regiment => regiment.date)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  let streak = 1;
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
-
-  for (let i = 0; i < sortedRegiments.length - 1; i++) {
-    const currentDate = new Date(sortedRegiments[i].date);
-    const previousDate = new Date(sortedRegiments[i + 1].date);
-
-    // Calculate the difference in days
-    const dayDifference = Math.floor(
-      (currentDate - previousDate) / (1000 * 60 * 60 * 24)
-    );
-
-    if (dayDifference === 1) {
-      streak++;
-    } else {
-      break;
-    }
-  }
-
-  return streak;
-};
 
 
 export default function Home() {
@@ -49,7 +19,7 @@ export default function Home() {
   
   const navigate = useNavigate();
 
-  const streak = calculateStreak(lastWorkout?.oneUser?.completedRegiments);
+ 
 
 
   
@@ -66,23 +36,6 @@ export default function Home() {
   if (Auth.loggedIn()) {
     return (
       <>
-      {streak === 0 ? (
-        null
-      ) : (
-        <div>
-        <div className='flex justify-center items-center w-full relative'>
-        <div className='flex justify-center' style={{width: "120px", height: "120px"}}>
-          <img src="/flame.png" alt="Fitness Tracker Flame Logo" />
-          <div className="absolute top-20 right-26 bg-yellow rounded-full w-10 h-10 flex items-center justify-center">
-            <span className="text-black font-bold text-3xl">{streak}</span>
-          </div>
-        </div>
-        </div>
-        <h2 className='text-white flex justify-center'>Day Streak</h2>
-      </div>
-      )}
-      
-
       {lastWorkout?.oneUser?.completedRegiments?.length > 0 ? (
   <div>
     <div className='flex justify-center items-center w-full relative row'>
