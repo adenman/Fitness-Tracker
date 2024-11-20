@@ -7,7 +7,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      external: ['read-more-react']
+      external: ['read-more-react', '@fullcalendar/react']
     }
   },
   define: {
