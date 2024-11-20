@@ -15,10 +15,6 @@ import NewWorkout from "./pages/newWorkout";
 import Regiment from "./pages/Regiment";
 import Log from "./pages/Log";
 
-
-
-
-
 const router = createBrowserRouter([
   {
     path: "/",
