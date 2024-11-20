@@ -52,6 +52,7 @@ const typeDefs = gql`
     oneUser(userId: ID!): User
     userRegiments(userId: ID!): [Regiment]
     Regiment(regiment: ID!): Regiment
+    CompletedRegiments(CompletedRegiment: ID!): [CompletedRegiment]
   }
 
   type Mutation {

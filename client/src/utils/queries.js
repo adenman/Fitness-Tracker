@@ -18,6 +18,18 @@ export const GET_REGIMENTS = gql`
   }
 `;
 
+export const GET_COMPLETED_REGIMENTS = gql`
+query CompletedRegiments($completedRegiment: ID!) {
+  CompletedRegiments(CompletedRegiment: $completedRegiment) {
+    _id
+    date
+    name
+    progressPic
+    time
+  }
+}
+`;
+
 
 export const REGIMENT = gql`
   query Regiment($regiment: ID!) {
