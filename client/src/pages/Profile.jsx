@@ -261,6 +261,7 @@ export default function Profile({ onLogout }) {
   </div>
 )}
 
+
 {isEditingPassword ? (
   <div className="w-full px-4 mt-6">
     <form 
