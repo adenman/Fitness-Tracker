@@ -45,7 +45,9 @@ export default defineConfig({
     "react-drag-drop-files",
     "read-more-react",
     "tailwind-merge",
-    "tailwindcss-animate"]
+    "tailwindcss-animate",
+    "date-fns"
+  ]
     }
   },
   define: {
