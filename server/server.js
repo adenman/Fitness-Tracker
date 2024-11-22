@@ -35,7 +35,7 @@ app.use(cors({
 const startApolloServer = async () => {
   await server.start();
 
-  app.use(express.urlencoded({ limit: '50mb', extended: false }));
+  app.use(express.urlencoded({ limit: '50mb', extended: true }));
   app.use(express.json({ limit: '50mb' }));
 
   // Serve up static assets
@@ -45,13 +45,13 @@ const startApolloServer = async () => {
     context: authMiddleware
   }));
 
-  if (process.env.NODE_ENV === 'production') {
+
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
     app.get('*', (req, res) => {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
-  }
+
 
   db.once('open', () => {
     app.listen(PORT, HOST, () => {

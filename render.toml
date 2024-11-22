@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: fitness-tracker
+    env: node
+    buildCommand: npm install && cd client && npm install && npm run build
+    startCommand: cd server && npm start
+    envVars:
+      - key: MONGODB_URI
+        fromDatabase:
+          name: devnest
+          property: connectionString
+      - key: JWT_S
+        generateValue: true
