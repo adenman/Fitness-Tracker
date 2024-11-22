@@ -55,14 +55,14 @@ function WorkoutCards() {
         <input
           type="text"
           placeholder="Search exercises..."
-          className="p-2 blue-back  accentb border-2 rounded w-64 placeholder-white"
+          className="p-2 test2 border-2 rounded w-64 placeholder-white"
           
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div className="flex gap-4">
           <select 
-            className="p-2 blue-back t accentb border-2 rounded"
+            className="p-2 test2 border-2 rounded"
             value={muscle} 
             onChange={(e) => setMuscle(e.target.value)}
           >
@@ -75,7 +75,7 @@ function WorkoutCards() {
           </select>
 
           <select 
-            className="p-2 blue-back t accentb border-2 rounded"
+            className="p-2 test2 border-2 rounded"
             value={difficulty} 
             onChange={(e) => setDifficulty(e.target.value)}
           >
@@ -95,13 +95,13 @@ function WorkoutCards() {
         {filteredExercises.map((exercise, index) => (
           <Card 
           key={index} 
-          className="border-4 accentb t blue-back"
+          className="border-4 test2"
           style={{ 
             backgroundColor: '#445b5f',  // Light gray background
 
           }}
         >
-            <div className="flex flex-col rounded blue-back">
+            <div className="flex flex-col rounded-sm test2">
               <h5 className="text-2xl font-medium text-center mb-4">
                 {exercise.name}
               </h5>
@@ -124,7 +124,7 @@ function WorkoutCards() {
                   </p>
                 </div>
               </div>
-              <button className="text-2xl accent text-black" 
+              <button className="text-2xl accent rounded-b text-black" 
               onClick={() => handleAddWorkout(exercise)}>+</button>
             </div>
           </Card>

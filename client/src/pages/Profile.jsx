@@ -168,7 +168,7 @@ export default function Profile({ onLogout }) {
         handleEditPfpClick();
         setShowDragDrop(true);
       }}>
-          <div className="profilepic">
+          <div className="profilepic border-2 test2">
             {/* Use newPfp if available, otherwise use existing profile picture */}
             <img 
               className="profilepic__image" 
@@ -215,17 +215,17 @@ export default function Profile({ onLogout }) {
 
       
 
-      <div className="border-3 accent mt-6">
+      <div className="border-3 border-2 test2 rounded-2xl mt-6">
       {isEditingName ? (
   <div className="w-full px-4 mt-6">
     <form 
-      className="bg-white shadow-md rounded-lg p-4 max-w-md mx-auto" 
+      className="border-2 test2 shadow-md rounded-lg p-4 max-w-md mx-auto" 
       onSubmit={handleSaveEdit}
     >
       <div className="mb-4">
         <input 
           type="text" 
-          className="w-full px-3 py-2 text-black border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 t border-2 bg-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="New Username" 
           value={newName} 
           onChange={(e) => setNewName(e.target.value)} 
@@ -235,13 +235,13 @@ export default function Profile({ onLogout }) {
       <div className="flex justify-between space-x-2">
         <button 
           type="submit" 
-          className="flex-1 bg-blue-500 text-black py-2 rounded-md hover:bg-blue-600 transition"
+          className="flex-1 accent text-black py-2 rounded-md transition"
         >
           Update
         </button>
         <button 
           type="button"
-          className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition"
+          className="flex-1 bg-black t py-2 rounded-md  transition"
           onClick={() => {setIsEditingName(false)}}
         >
           Cancel
@@ -250,11 +250,11 @@ export default function Profile({ onLogout }) {
     </form>
   </div>
 ) : (
-  <div className="flex justify-between items-center px-4 py-3 test shadow-sm">
+  <div className="flex justify-between  items-center px-4 py-3 test shadow-sm">
     <span className="text-lg">Username: {data.oneUser.userName}</span>
     <button 
       onClick={handleEditNameClick} 
-      className="accent text-black px-3 py-1 rounded-md text-sm"
+      className=" bg-black t px-3 py-1 rounded-md text-sm"
     >
       Edit
     </button>
@@ -265,13 +265,13 @@ export default function Profile({ onLogout }) {
 {isEditingPassword ? (
   <div className="w-full px-4 mt-6">
     <form 
-      className="bg-white shadow-md rounded-lg p-4 max-w-md mx-auto" 
+      className="border-2 test2 shadow-md rounded-lg p-4 max-w-md mx-auto" 
       onSubmit={handleSaveEdit}
     >
       <div className="mb-4">
         <input 
           type="password" 
-          className="w-full px-3 py-2 text-black border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 t bg-black border rounded-md focus:outline-none focus:ring-2 "
           placeholder="New Password" 
           value={newPassword} 
           onChange={(e) => setNewPassword(e.target.value)} 
@@ -281,13 +281,13 @@ export default function Profile({ onLogout }) {
       <div className="flex justify-between space-x-2">
         <button 
           type="submit" 
-          className="flex-1 bg-blue-500 text-white py-2 rounded-md  transition"
+          className="flex-1 accent text-black py-2 rounded-md  transition"
         >
           Update
         </button>
         <button 
           type="button"
-          className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition"
+          className="flex-1 bg-black t py-2 rounded-md hover:bg-gray-300 transition"
           onClick={() => {setIsEditingPassword(false)}}
         >
           Cancel
@@ -300,7 +300,7 @@ export default function Profile({ onLogout }) {
     <span className="text-lg">Password: ********</span>
     <button 
       onClick={handleEditPasswordClick} 
-      className="accent text-black px-3 py-1 rounded-md text-sm"
+      className="bg-black t px-3 py-1 rounded-md text-sm"
     >
       Edit
     </button>
@@ -309,24 +309,27 @@ export default function Profile({ onLogout }) {
         
         
       </div>
-      <div className="flex justify-center mt-10">
-        <button onClick={()=> navigate(`/Log/${userId}`)} className="py-6 px-24 mt-6  test border-2 accentb">Calendar/Log</button>
+      <div className="flex justify-center mt-10  rounded-lg overflow-hidden 
+            transition duration-300 ease-in-out 
+            transform active:scale-95 
+            hover:shadow-lg">
+        <button onClick={()=> navigate(`/Log/${userId}`)} className="py-6 px-20 mt-6 rounded-full  test border-2 test2">Calendar/Log</button>
       </div>
 
       <div>
-      <div className="px-2 sm:px-4">
+      <div className="px-2 sm:px-4 ">
   <h1 className="text-xl sm:text-2xl font-bold text-center mt-6 mb-4 t">Your Fitness Journey</h1>
-  <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+  <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 ">
     {data.oneUser.completedRegiments.filter(regiment => regiment.progressPic).length > 0 ? (
       data.oneUser.completedRegiments
         .filter(regiment => regiment.progressPic)
         .map((regiment, index) => (
           <div 
             key={index} 
-            className="bg-white shadow-md rounded-lg overflow-hidden 
+            className="test2 shadow-md rounded-lg overflow-hidden 
             transition duration-300 ease-in-out 
             transform active:scale-95 
-            hover:shadow-lg"
+            hover:shadow-lg mb-10"
           >
             <div className="relative aspect-square">
               <img

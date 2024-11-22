@@ -111,21 +111,21 @@ const NewRegiment = () => {
     return (
       <div>
         
-        <ul className="list-group border blue-b b">
+        <ul className="list-group border test2 p-2">
           {isEditing ? (
             <input
               type="text"
               value={workoutName}
               onChange={handleNameChange}
               onKeyPress={handleKeyPress}
-              className="text-center form-control"
+              className="text-center form-control bg-black text-white "
               autoFocus
             />
           ) : (
             <h1 className='text-white text-center rounded'>{workoutName}</h1>
           )}
           
-          <button className='t' onClick={handleEditClick}>Edit Name</button>
+          <button className='bg-black text-white py-2 mx-16 rounded' onClick={handleEditClick}>Edit Name</button>
           {(!selectedWorkouts || selectedWorkouts.length === 0) && (
       <h2 className="text-center text-xl font-bold text-white my-4">
         Add a workout to your regiment
@@ -133,7 +133,7 @@ const NewRegiment = () => {
     )}
           
           {selectedWorkouts ? selectedWorkouts.map((workout, index) => (
-            <div key={index} className="workout-card border-2 accentb blue-back rounded accentT p-4 my-2 mx-2">
+            <div key={index} className="workout-card border-2 bg-black blue-back rounded-xl t p-4 my-2 mx-2">
               <div className="flex justify-between items-center w-full">
                 <div>
                   <h2 className="text-xl font-bold">{workout.name}</h2>
@@ -157,7 +157,7 @@ const NewRegiment = () => {
         
       </h2>
     ) : (<button 
-    className='bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded' 
+    className='accent text-white font-bold py-2 px-4 rounded mb-4' 
     onClick={() => {
       handleSaveWorkout();
       window.location.href = '/';

@@ -1,9 +1,10 @@
 :root {
-  background-color: #20212b ;
+  background-color: #000000 ;
   color: white;
 }
+/* #20212b */
 html{
-  background-color: #20212b ;
+  background-color: #000000 ;
 }
 .mar{
   margin-top: 120px;
@@ -37,6 +38,13 @@ html{
 
 
 
+.small-text{
+  font-size: 15px;
+}
+
+
+
+
 
 
 
@@ -48,20 +56,16 @@ html{
 
 
 .g{
-  background-color: #20212b
+  background-color: #000000
 }
 
-
-.test{
-  background-color: #445b5f;
-}
 
 .darkbg{
-  background-color: #303f42;
+  background-color: #000000;
 }
 
 .accent{
-  background-color: #d0e4bd;
+  background-color: #097fa3;
 }
 .accentb{
   border-color: #d0e4bd;
@@ -75,8 +79,8 @@ html{
 }
 
 .test2{
-  background-color: #55868C;
-  border-color: #F7A072;
+  background-color: #09216e;
+  border-color: #2307c0;
 }
 
 .t{
@@ -173,10 +177,9 @@ html{
   position: relative;
   border-radius: 150px;
   overflow: hidden;
-  background-color: #111;
-  width: 200px;  /* Fixed width */
-  height: 200px; /* Fixed height */
-  margin: 0 auto; /* Center horizontally */
+  width: 200px;  
+  height: 200px; 
+  margin: 0 auto;
 }
 
 .profilepic:hover .profilepic__content {
@@ -189,10 +192,11 @@ html{
 
 .profilepic__image {
   object-fit: cover;
-  width: 100%;    /* Fill the container */
-  height: 100%;   /* Fill the container */
+  width: 100%;   
+  height: 100%;   
   opacity: 1;
   transition: opacity .2s ease-in-out;
+  
 }
 
 .profilepic__content {

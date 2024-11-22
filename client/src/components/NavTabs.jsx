@@ -57,7 +57,7 @@ function NavTabs() {
 
   return (
     <div className="g mb-32">
-      <header className="absolute inset-x-0 top-0 z-50 test">
+      <header className="absolute inset-x-0 top-0 z-50 test2">
         <nav aria-label="Global" className="flex items-center justify-between p-4">
           <div className="flex">
             <button onClick={handleShow}>
@@ -86,8 +86,8 @@ function NavTabs() {
         </nav>
       </header>
   
-      <Offcanvas show={show} onHide={handleClose} backdrop="static" className="g" style={{ backgroundColor: '#292828' }}>
-        <Offcanvas.Header closeButton>
+      <Offcanvas show={show} onHide={handleClose} backdrop="static" className="g" style={{ backgroundColor: '#000000' }}>
+      <Offcanvas.Header closeButton closeVariant="white" >
           <Offcanvas.Title style={{ color: 'white' }}>Hello {name}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>

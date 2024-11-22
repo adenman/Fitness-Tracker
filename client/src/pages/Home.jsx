@@ -42,8 +42,8 @@ export default function Home() {
       <h2 className='flex justify-center'>Last Workout</h2>
       {mostRecentRegiment && (
         <div className="w-full">
-          <button className="workout-card test2 rounded p-4 my-2 mx-2 t back w-full">
-            <div className="flex justify-between items-center w-full">
+          <button className="workout-card test2 border-3 rounded-full p-4 my-2 mx-2 t back w-full">
+            <div className="flex justify-center items-center w-full">
               <div>
                 <h2 className="text-xl justify-center font-bold w-full text-center">
                   {mostRecentRegiment.name}
@@ -71,28 +71,33 @@ export default function Home() {
     <p>Error loading regiments</p>
   ) : data?.userRegiments?.length ? (
     <>
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
       {data.userRegiments.map((regiment, index) => (
   <div className="w-full" key={index}>
     <button 
-      className="workout-card  test2 rounded p-4 my-2 mx-2 t back w-full"
+      className="workout-card test2 border-2 rounded-full p-3 my-2 mx-2 t back w-full  shadow-md  overflow-hidden 
+            transition duration-100 ease-in-out 
+            transform active:scale-95 
+            hover:shadow-lg"
       onClick={() => navigate(`/workout/${regiment._id}`)}
     >
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-center items-center w-full">
         <div>
-        <h2 className="text-xl justify-center font-bold w-full text-center">{regiment.name}</h2>
+        <h2 className="font-bold w-full small-text">{regiment.name}</h2>
         </div>
       </div>
     </button>
   </div>
 ))}
+</div>
       <div className="w-full" >
       <button 
-      className="workout-card border-2 blue-b rounded p-4 my-2 mx-2 t green w-full"
+      className="workout-card border-3 blue-b rounded-full p-4 my-2 mx-2 t test2 w-full"
       onClick={() => navigate(`/newWorkout`)}
     >
-          <div className="flex justify-between items-center w-full">
-            <div>
-              <h2 className="text-xl font-bold">Add New Workout</h2>
+          <div className="flex justify-center items-center w-full">
+            <div className='flex justify-center'>
+              <h2 className="text-xl flex justify-center font-bold">Add New Workout</h2>
             </div>
           </div>
         
