@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-
+import { useState, useEffect } from "react";
+import React from './node_modules/react';
 const Stopwatch = ({ onTimeUpdate }) => {
   // state to store time
   const [time, setTime] = useState(0);
