@@ -7,47 +7,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      external: ["@apollo/client",
-    "@emotion/react",
-    "@emotion/styled",
-    "@fullcalendar/core",
-    "@fullcalendar/daygrid",
-    "@fullcalendar/interaction",
-    "@fullcalendar/react",
-    "@fullcalendar/timegrid",
-    "@material-tailwind/react",
-    "@mui/icons-material",
-    "@mui/material",
-    "@radix-ui/react-icons",
-    "@tailwindcss/forms",
-    "@apollo/all",
-    "@apollo/apollo",
-    "@apollo/apollo-server-express",
-    "bcrypt",
-    "bootstrap",
-    "bootstrap-icons",
-    "class-variance-authority",
-    "clsx",
-    "dayjs",
-    "dotenv",
-    "flowbite",
-    "flowbite-react",
-    "graphql",
-    "jsonwebtoken",
-    "lucide-react",
-    "mongodb",
-    "mongoose",
-    "next",
-    "react",
-    "react-big-calendar",
-    "react-bootstrap",
-    "react-dom",
-    "react-drag-drop-files",
-    "read-more-react",
-    "tailwind-merge",
-    "tailwindcss-animate",
-    "date-fns"
-  ]
+    external: ["react", "react-dom"]
     }
   },
   define: {
@@ -70,5 +30,5 @@ export default defineConfig({
   },
   css: {
     postcss: './postcss.config.js',
-  },
+  }
 })
