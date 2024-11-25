@@ -1,8 +1,7 @@
-import  { useState, useEffect } from 'react';
-import React from './node_modules/react';
+import React, { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction'; 
+import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin
 import { Typography } from '@mui/material';
 import { useParams } from "react-router-dom";
 import { GET_USER_BY_ID } from "../utils/queries";

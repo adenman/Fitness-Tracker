@@ -1,5 +1,4 @@
-import { useState } from "react";
-import React from './node_modules/react';
+import React, { useState } from "react";
 
 const fileTypes = ["JPG", "PNG", "GIF", "SVG", "BMP", "TIFF", "WEBP"];
 
