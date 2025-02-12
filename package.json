@@ -10,7 +10,7 @@
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",
     "render-build": "npm install && npm run build",
-    "serve": "npx serve -s client/build -l $PORT"
+    "serve": "cd client && npm run serve"
   },
   "keywords": [],
   "author": "",
