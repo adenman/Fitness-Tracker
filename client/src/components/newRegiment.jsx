@@ -38,14 +38,14 @@ const NewRegiment = () => {
 
 
     const handleSaveWorkout = async () => {
-
       if (!Auth.loggedIn()) {
         return;
       }
-      
+    
       const profile = Auth.getProfile();
       const userId = profile.data._id;
-      
+      console.log("User ID:", userId);
+    
       if (!selectedWorkouts || selectedWorkouts.length === 0) {
         return (
           <h2 className="text-center text-xl font-bold text-white mt-4">
@@ -53,9 +53,7 @@ const NewRegiment = () => {
           </h2>
         );
       }
-      
-      
-
+    
       const regimentData = {
         name: workoutName,
         workouts: selectedWorkouts
@@ -66,7 +64,7 @@ const NewRegiment = () => {
           variables: {
             name: workoutName,
             workouts: selectedWorkouts.map(workout => ({
-              name: workout.name,          
+              name: workout.name,
               instructions: workout.instructions,
               type: workout.type,
               muscle: workout.muscle,
@@ -76,16 +74,22 @@ const NewRegiment = () => {
           }
         });
     
+        console.log("Regiment Response:", regimentResponse);
+    
         if (regimentResponse.data) {
-          await addRegimentToUser({
+          console.log("Regiment created successfully:", regimentResponse.data.addRegiment._id);
+          const addRegimentToUserResponse = await addRegimentToUser({
             variables: {
               userId: userId,
               regimentId: regimentResponse.data.addRegiment._id
             }
           });
+          console.log("Add Regiment to User Response:", addRegimentToUserResponse);
           setSelectedWorkouts([]);
+        } else {
+          console.error("Failed to create regiment:", regimentResponse);
         }
-
+    
       } catch (err) {
         console.error("Error details:", err.message);
       }
