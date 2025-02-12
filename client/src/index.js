@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals.js';
+import App from './App.jsx'; // Add the correct extension
+import reportWebVitals from './reportWebVitals.js'; // Add the correct extension
 
 ReactDOM.render(
   <React.StrictMode>
