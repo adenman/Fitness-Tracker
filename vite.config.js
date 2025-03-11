@@ -19,6 +19,7 @@
 
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
@@ -27,9 +28,9 @@ export default defineConfig({
     assetsDir: 'assets',
     rollupOptions: {
       input: {
-        main: './index.html',
+        main: resolve(__dirname, 'template.html'),
       },
-    },
+    }
   },
   base: './'
 })
