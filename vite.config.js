@@ -28,10 +28,15 @@ export default defineConfig({
     assetsDir: 'assets',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'template.html'),
+        main: resolve(__dirname, 'index.html'), // Changed from template.html to index.html
       },
     }
   },
-  base: './'
+  server: {
+    headers: {
+      'Content-Type': 'application/javascript',
+    },
+  },
+  base: '/',  // Changed from './' to '/'
 })
 
