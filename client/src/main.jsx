@@ -1,19 +1,18 @@
 
+import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import './App.css'
-
-
-import App from "./App";
-import Error from "./pages/Error";
-import Home from "./pages/Home";
-import LogIn from "./pages/LogIn";
-import SignUp from "./pages/signup";
-import Profile from "./pages/Profile";
-import NewWorkout from "./pages/newWorkout";
-import Regiment from "./pages/Regiment";
-import Log from "./pages/Log";
+import './App.css';
+import App from "./App.jsx";
+import Error from "./pages/Error.jsx";
+import Home from "./pages/Home.jsx";
+import LogIn from "./pages/LogIn.jsx";
+import SignUp from "./pages/signup.jsx";
+import Profile from "./pages/Profile.jsx";
+import NewWorkout from "./pages/newWorkout.jsx";
+import Regiment from "./pages/Regiment.jsx";
+import Log from "./pages/Log.jsx";
 
 const router = createBrowserRouter([
   {
@@ -56,3 +55,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <RouterProvider router={router} />
 );
+
+// ReactDOM.createRoot(document.getElementById("root")).render(
+//   <RouterProvider router={router} />
+// );
