@@ -24,21 +24,22 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    open: true,
     proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
+      '/graphql': {
+        target: 'http://localhost:3000',
         changeOrigin: true,
-        secure: false,
+        secure: false
       }
     }
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
-    manifest: true,
-    rollupOptions: {
-      external: ['react', 'react-dom']
+    emptyOutDir: true,
+    minify: true
+  },
+  resolve: {
+    alias: {
+      '@': '/src'
     }
   }
 })
