@@ -19,24 +19,27 @@
 
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'), // Changed from template.html to index.html
-      },
+  server: {
+    port: 3000,
+    open: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      }
     }
   },
-  server: {
-    headers: {
-      'Content-Type': 'application/javascript',
-    },
-  },
-  base: '/',  // Changed from './' to '/'
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
+    manifest: true,
+    rollupOptions: {
+      external: ['react', 'react-dom']
+    }
+  }
 })
 
