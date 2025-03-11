@@ -48,9 +48,10 @@ const startApolloServer = async () => {
 
   app.use(express.static(path.join(__dirname, '../client/dist')));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-  });
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 
 
   db.once('open', () => {
