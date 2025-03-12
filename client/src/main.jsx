@@ -1,6 +1,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import './App.css';
@@ -53,11 +54,21 @@ const router = createBrowserRouter([
 ], {
   basename: '/'
 });
+
+
+
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <ApolloProvider client={client}>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </ApolloProvider>
 );
+
+
+// ReactDOM.createRoot(document.getElementById("root")).render(
+//   <React.StrictMode>
+//     <RouterProvider router={router} />
+//   </React.StrictMode>
+// );
 
 // ReactDOM.createRoot(document.getElementById("root")).render(
 //   <RouterProvider router={router} />

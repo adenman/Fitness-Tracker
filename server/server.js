@@ -45,21 +45,21 @@ const startApolloServer = async () => {
     context: authMiddleware
   }));
 
+  app.use(express.static(path.join(__dirname, '../client/dist')));
 
-  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
-
-
-  db.once('open', () => {
-    app.listen(PORT, HOST, () => {
+  mongoose.connection.once('open', () => {
+    console.log('Successfully connected to MongoDB!');
+      app.listen(PORT, HOST, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`API server listening on ${HOST}`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
   });
 };
+
 // Call to start Apollo Server
-startApolloServer(); 
+startApolloServer();
