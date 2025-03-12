@@ -15,6 +15,11 @@ import NewWorkout from "./pages/newWorkout.jsx";
 import Regiment from "./pages/Regiment.jsx";
 import Log from "./pages/Log.jsx";
 
+const client = new ApolloClient({
+  uri: "http://localhost:3001/graphql", // Replace with your actual GraphQL API endpoint
+  cache: new InMemoryCache(),
+});
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -51,9 +56,9 @@ const router = createBrowserRouter([
       },
     ],
   },
-], {
-  basename: '/'
-});
+// ], {
+//   basename: '/'
+// });
 
 
 
