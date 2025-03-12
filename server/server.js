@@ -51,9 +51,8 @@ const startApolloServer = async () => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
 
-  mongoose.connection.once('open', () => {
-    console.log('Successfully connected to MongoDB!');
-      app.listen(PORT, HOST, () => {
+  db.once('open', () => {
+    app.listen(PORT, HOST, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`API server listening on ${HOST}`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
