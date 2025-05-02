@@ -1,7 +1,7 @@
 'use client'
 
 import Auth from '../utils/auth';
-// import { useState } from 'react';
+import { useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useNavigate } from 'react-router-dom'
 import {GET_USER_BY_ID } from "../utils/queries";
@@ -45,7 +45,7 @@ function NavTabs() {
   const name = profile?.data?.userName || 'Guest';
   const id = profile?.data?._id;
   const navigate = useNavigate();
-  // const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { loading: lastWorkoutLoading, error: lastWorkoutError, data: lastWorkout } = useQuery(GET_USER_BY_ID, {
@@ -86,7 +86,7 @@ function NavTabs() {
         </nav>
       </header>
   
-      <Offcanvas  onHide={handleClose} backdrop="static" className="g" style={{ backgroundColor: '#000000' }}>
+      <Offcanvas show={show} onHide={handleClose} backdrop="static" className="g" style={{ backgroundColor: '#000000' }}>
       <Offcanvas.Header closeButton closeVariant="white" >
           <Offcanvas.Title style={{ color: 'white' }}>Hello {name}</Offcanvas.Title>
         </Offcanvas.Header>
