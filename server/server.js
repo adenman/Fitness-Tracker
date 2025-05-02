@@ -10,6 +10,8 @@ const { expressMiddleware } = require('@apollo/server/express4');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 
+
+
 const PORT = process.env.PORT || 3001;
 const HOST = '0.0.0.0';
 const app = express();
@@ -45,13 +47,11 @@ const startApolloServer = async () => {
     context: authMiddleware
   }));
 
+  app.use(express.static(path.join(__dirname, '../client/build')));
 
-    app.use(express.static(path.join(__dirname, '../client/dist')));
-
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-    });
-
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  });
 
   db.once('open', () => {
     app.listen(PORT, HOST, () => {
@@ -61,5 +61,6 @@ const startApolloServer = async () => {
     });
   });
 };
+
 // Call to start Apollo Server
-startApolloServer(); 
+startApolloServer();
