@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Auth from '../utils/auth';
-import { useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
@@ -48,7 +47,7 @@ function NavTabs() {
   const id = profile?.data?._id;
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const [show, setShow] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const { loading: lastWorkoutLoading, error: lastWorkoutError, data: lastWorkout } = useQuery(GET_USER_BY_ID, {
